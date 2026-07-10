@@ -32,7 +32,8 @@ app.prepare().then(() => {
     runBookingReminders().catch((err) => console.error("[reminders]", err));
   });
 
-  httpServer.listen(port, () => {
-    console.log(`\n  ▲ Vaony ready on http://localhost:${port}\n`);
+  const host = process.env.HOST ?? "0.0.0.0";
+  httpServer.listen(port, host, () => {
+    console.log(`\n  ▲ Vaony ready on http://${host}:${port}\n`);
   });
 });
