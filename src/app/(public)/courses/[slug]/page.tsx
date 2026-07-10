@@ -9,6 +9,8 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Avatar } from "@/components/ui/Avatar";
 import { Rating } from "@/components/ui/Rating";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {

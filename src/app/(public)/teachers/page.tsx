@@ -6,6 +6,8 @@ import { Rating } from "@/components/ui/Rating";
 import { SoftwareBadge } from "@/components/ui/Badge";
 import { Reveal } from "@/components/ui/Reveal";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Our Teachers",
   description:

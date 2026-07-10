@@ -16,7 +16,7 @@ import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { FunctionCurve } from "@/components/ui/FunctionCurve";
 import { Reveal } from "@/components/ui/Reveal";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 const benefits = [
   {

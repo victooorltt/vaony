@@ -14,6 +14,8 @@ import { Rating } from "@/components/ui/Rating";
 import { SoftwareBadge, Badge } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {

@@ -5,6 +5,8 @@ import { formatMoney, cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { Reveal } from "@/components/ui/Reveal";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Courses & Services",
   description:
