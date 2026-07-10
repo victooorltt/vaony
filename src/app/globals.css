@@ -9,7 +9,7 @@
   --color-vaony-amber: #ffb020;
   --color-vaony-grid: rgba(41, 36, 253, 0.07);
 
-  --font-display: var(--font-space-grotesk), ui-sans-serif, sans-serif;
+  --font-display: var(--font-inter), ui-sans-serif, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 
@@ -44,16 +44,10 @@ h1, h2, h3, h4 {
 
 /* ---- Signature: coordinate-plane grid (graph paper) ---- */
 .grid-pattern {
-  background-image:
-    linear-gradient(var(--color-vaony-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-vaony-grid) 1px, transparent 1px);
-  background-size: 42px 42px;
+  /* Removed background grid lines for a cleaner, modern look */
 }
 .grid-pattern-dark {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 42px 42px;
+  /* Removed background grid lines for a cleaner, modern look */
 }
 
 /* ---- Brand gradient (same stops as the logo) ---- */
@@ -72,13 +66,11 @@ h1, h2, h3, h4 {
   background: rgba(247, 248, 252, 0.72);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(41, 36, 253, 0.08);
 }
 .glass-card {
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(41, 36, 253, 0.1);
 }
 
 /* ---- The V-angle: ~60° diagonal section cut ---- */

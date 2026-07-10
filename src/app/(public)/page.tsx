@@ -128,14 +128,14 @@ export default async function HomePage() {
             <Reveal key={course.id} delay={i * 90}>
               <Link
                 href={`/courses/${course.slug}`}
-                className="group flex h-full flex-col rounded-2xl border border-vaony-ink/8 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-vaony-blue/30 hover:shadow-lg hover:shadow-vaony-blue/10"
+                className="group flex h-full flex-col rounded-2xl border border-transparent bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-vaony-blue/10"
               >
                 <Badge tone="blue">{course.category.name}</Badge>
                 <h3 className="mt-3 font-display text-lg font-semibold text-vaony-ink group-hover:text-vaony-blue">
                   {course.title}
                 </h3>
                 <p className="mt-2 flex-1 text-sm text-vaony-ink/60">{course.shortDesc}</p>
-                <div className="mt-4 flex items-center justify-between border-t border-vaony-ink/8 pt-4">
+                <div className="mt-4 flex items-center justify-between border-t border-transparent pt-4">
                   <span className="font-mono text-sm font-semibold text-vaony-deep">
                     {formatMoney(course.price, course.currency)}
                     <span className="font-normal text-vaony-ink/40">/h</span>
@@ -162,7 +162,7 @@ export default async function HomePage() {
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
             {benefits.map((b, i) => (
               <Reveal key={b.title} delay={i * 80}>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                <div className="rounded-2xl border border-transparent bg-white/5 p-6">
                   <b.icon className="h-7 w-7 text-vaony-amber" />
                   <h3 className="mt-4 font-display text-lg font-semibold">{b.title}</h3>
                   <p className="mt-2 text-sm text-white/65">{b.body}</p>
@@ -186,7 +186,7 @@ export default async function HomePage() {
             <Reveal key={t.id} delay={i * 90}>
               <Link
                 href={`/teachers/${t.userId}`}
-                className="group block h-full rounded-2xl border border-vaony-ink/8 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:shadow-vaony-blue/10"
+                className="group block h-full rounded-2xl border border-transparent bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:shadow-vaony-blue/10"
               >
                 <div className="flex items-center gap-4">
                   <Avatar firstName={t.user.firstName} lastName={t.user.lastName} src={t.user.avatarUrl} size="lg" />
