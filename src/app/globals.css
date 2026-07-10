@@ -129,3 +129,15 @@ h1, h2, h3, h4 {
   --fc-event-border-color: #2924fd;
   font-family: var(--font-body);
 }
+
+/* ---- Hero Image Gradient Overlay ---- */
+.hero-image-overlay {
+  background: linear-gradient(to bottom, var(--color-vaony-paper, #f7f8fc) 0%, var(--color-vaony-paper, #f7f8fc) 15%, transparent 35%);
+}
+
+@media (min-width: 1024px) {
+  .hero-image-overlay {
+    background: linear-gradient(to right, var(--color-vaony-paper, #f7f8fc) 0%, var(--color-vaony-paper, #f7f8fc) 15%, transparent 35%);
+  }
+}
+

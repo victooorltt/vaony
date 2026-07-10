@@ -13,8 +13,8 @@ import { Badge, SoftwareBadge } from "@/components/ui/Badge";
 import { Rating } from "@/components/ui/Rating";
 import { Avatar } from "@/components/ui/Avatar";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
-import { FunctionCurve } from "@/components/ui/FunctionCurve";
 import { Reveal } from "@/components/ui/Reveal";
+
 
 export const dynamic = "force-dynamic";
 
@@ -61,15 +61,14 @@ export default async function HomePage() {
   return (
     <>
       {/* ---- Hero: the coordinate plane ---- */}
-      <section className="grid-pattern section-cut-bottom relative overflow-hidden bg-vaony-paper pb-28 pt-16 sm:pt-24">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2">
-          <div>
-            <p className="font-mono text-sm text-vaony-blue">
-              let subject ∈ {"{math, physics, programming, CNC…}"}
-            </p>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-vaony-ink sm:text-5xl lg:text-6xl">
+      <section className="grid-pattern relative overflow-hidden bg-vaony-paper pb-20 pt-20 sm:pt-24 lg:pt-26 lg:pb-0 lg:min-h-[650px] lg:flex lg:items-center">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 w-full">
+          <div className="lg:col-span-5 relative z-10">
+            <h1 className="font-display text-4xl font-bold leading-tight text-vaony-ink sm:text-5xl lg:text-6xl">
               The subject you&apos;re stuck on,{" "}
-              <span className="brand-gradient-text">solved one-on-one.</span>
+              <span className="brand-gradient-text">
+                <span className="whitespace-nowrap">solved one-on-one.</span>
+              </span>
             </h1>
             <p className="mt-5 max-w-lg text-lg text-vaony-ink/70">
               Private online tutoring in exact sciences, engineering and
@@ -84,15 +83,19 @@ export default async function HomePage() {
                 Explore courses
               </ButtonLink>
             </div>
-            <p className="mt-5 font-mono text-xs text-vaony-ink/50">
-              from $15/session · no subscription required
-            </p>
           </div>
-          <div className="glass-card animate-float rounded-3xl p-4 shadow-xl shadow-vaony-blue/10">
-            <FunctionCurve className="h-auto w-full" />
+          <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:left-[45%] lg:w-[55%] mt-12 lg:mt-0 relative w-full h-[350px] sm:h-[450px] lg:h-full overflow-hidden">
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 z-10 pointer-events-none hero-image-overlay" />
+            <img
+              src="/Hero.webp"
+              alt="Tutoring Session"
+              className="h-full w-full object-cover object-center"
+            />
           </div>
         </div>
       </section>
+
 
       {/* ---- Counters ---- */}
       <section className="bg-vaony-paper py-14">
