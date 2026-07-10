@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+@theme {
+  /* Vaony brand — extracted from logo SVGs */
+  --color-vaony-blue: #2924fd;
+  --color-vaony-deep: #060d90;
+  --color-vaony-ink: #000b36;
+  --color-vaony-paper: #f7f8fc;
+  --color-vaony-amber: #ffb020;
+  --color-vaony-grid: rgba(41, 36, 253, 0.07);
+
+  --font-display: var(--font-space-grotesk), ui-sans-serif, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --animate-draw: draw 2.4s ease-out forwards;
+  --animate-float: float 7s ease-in-out infinite;
+
+  @keyframes draw {
+    from { stroke-dashoffset: 1400; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-vaony-paper);
+  color: var(--color-vaony-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* ---- Signature: coordinate-plane grid (graph paper) ---- */
+.grid-pattern {
+  background-image:
+    linear-gradient(var(--color-vaony-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-vaony-grid) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+.grid-pattern-dark {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+/* ---- Brand gradient (same stops as the logo) ---- */
+.brand-gradient {
+  background-image: linear-gradient(135deg, #2924fd 60%, #060d90 100%);
+}
+.brand-gradient-text {
+  background-image: linear-gradient(135deg, #2924fd 40%, #060d90 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- Glassmorphism: navbar + floating cards only ---- */
+.glass {
+  background: rgba(247, 248, 252, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(41, 36, 253, 0.08);
+}
+.glass-card {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(41, 36, 253, 0.1);
+}
+
+/* ---- The V-angle: ~60° diagonal section cut ---- */
+.section-cut-bottom {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - clamp(2rem, 5vw, 4.5rem)), 0 100%);
+}
+.section-cut-top {
+  clip-path: polygon(0 clamp(2rem, 5vw, 4.5rem), 100% 0, 100% 100%, 0 100%);
+}
+
+/* ---- Scroll reveal (driven by the <Reveal> component) ---- */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-hidden,
+  .reveal-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid var(--color-vaony-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* FullCalendar theme alignment */
+.fc {
+  --fc-border-color: rgba(0, 11, 54, 0.1);
+  --fc-button-bg-color: #2924fd;
+  --fc-button-border-color: #2924fd;
+  --fc-button-hover-bg-color: #060d90;
+  --fc-button-hover-border-color: #060d90;
+  --fc-button-active-bg-color: #060d90;
+  --fc-button-active-border-color: #060d90;
+  --fc-today-bg-color: rgba(41, 36, 253, 0.05);
+  --fc-event-bg-color: #2924fd;
+  --fc-event-border-color: #2924fd;
+  font-family: var(--font-body);
+}
