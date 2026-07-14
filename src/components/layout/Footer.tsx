@@ -7,7 +7,6 @@ const columns = [
     links: [
       { href: "/courses", label: "Course catalog" },
       { href: "/teachers", label: "Our teachers" },
-      { href: "/gallery", label: "Gallery" },
       { href: "/apply-teacher", label: "Teach on Vaony" },
     ],
   },
@@ -44,13 +43,10 @@ export function Footer() {
               One-on-one online tutoring in exact sciences, engineering and
               mathematics — taught by qualified engineers and specialists.
             </p>
-            <p className="mt-4 font-mono text-xs text-white/40">
-              100% online · learn from anywhere
-            </p>
           </div>
           {columns.map((col) => (
             <div key={col.title}>
-              <h3 className="font-mono text-xs uppercase tracking-wider text-white/50">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-white/50">
                 {col.title}
               </h3>
               <ul className="mt-4 space-y-2.5">
@@ -69,7 +65,7 @@ export function Footer() {
           <p className="text-xs text-white/40">
             © {new Date().getFullYear()} Vaony. All rights reserved.
           </p>
-          <p className="font-mono text-xs text-white/40">f(effort) = results</p>
+          <p className="text-xs text-white/40">100% online · one-on-one · worldwide</p>
         </div>
       </div>
     </footer>

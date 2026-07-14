@@ -203,7 +203,7 @@ export function TeacherProfileEditor({ profile }: { profile: ProfileData }) {
                 <a href={p.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-vaony-blue hover:underline">
                   {p.title} ↗
                 </a>
-                <p className="font-mono text-[11px] text-vaony-ink/45">{p.type.toLowerCase()}</p>
+                <p className="text-[11px] text-vaony-ink/45">{p.type.toLowerCase()}</p>
               </div>
               <button
                 onClick={() => removeItem("/api/teacher/portfolio", p.id)}

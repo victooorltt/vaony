@@ -23,7 +23,7 @@ export default async function AdminDashboard() {
   return (
     <div className="mx-auto max-w-5xl space-y-8">
       <div>
-        <p className="font-mono text-xs text-vaony-blue">admin.dashboard</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-blue">Admin dashboard</p>
         <h1 className="mt-1 font-display text-3xl font-bold text-vaony-ink">Platform overview</h1>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

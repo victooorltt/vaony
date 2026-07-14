@@ -31,7 +31,7 @@ export function StatCard({
 }) {
   return (
     <Card className="p-5">
-      <p className="font-mono text-xs uppercase tracking-wider text-vaony-ink/50">{label}</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-ink/50">{label}</p>
       <p className="mt-2 font-display text-3xl font-bold text-vaony-ink">{value}</p>
       {sub && <p className="mt-1 text-xs text-vaony-ink/50">{sub}</p>}
     </Card>

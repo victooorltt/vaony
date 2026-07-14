@@ -15,7 +15,7 @@ export default async function AdminCoursesPage() {
       <div className="mt-6 overflow-x-auto rounded-2xl border border-vaony-ink/8 bg-white">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-vaony-ink/8 text-left font-mono text-[11px] uppercase tracking-wider text-vaony-ink/50">
+            <tr className="border-b border-vaony-ink/8 text-left text-[11px] uppercase tracking-wider text-vaony-ink/50">
               <th className="px-4 py-3">Course</th>
               <th className="px-4 py-3">Category</th>
               <th className="px-4 py-3">Price</th>
@@ -32,8 +32,8 @@ export default async function AdminCoursesPage() {
                   {c.featured && <Badge tone="amber" className="ml-2">featured</Badge>}
                 </td>
                 <td className="px-4 py-3 text-vaony-ink/60">{c.category.name}</td>
-                <td className="px-4 py-3 font-mono">{formatMoney(c.price, c.currency)}</td>
-                <td className="px-4 py-3 font-mono">{c._count.enrollments}</td>
+                <td className="px-4 py-3">{formatMoney(c.price, c.currency)}</td>
+                <td className="px-4 py-3">{c._count.enrollments}</td>
                 <td className="px-4 py-3">
                   <Badge tone={c.published ? "green" : "neutral"}>
                     {c.published ? "published" : "hidden"}

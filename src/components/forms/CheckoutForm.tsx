@@ -96,7 +96,7 @@ export function CheckoutForm({
         </Button>
       )}
 
-      <p className="text-center font-mono text-[11px] text-vaony-ink/45">
+      <p className="text-center text-[11px] text-vaony-ink/45">
         🔒 payments are processed over HTTPS by certified providers
       </p>
     </div>

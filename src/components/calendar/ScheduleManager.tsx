@@ -50,7 +50,7 @@ export function ScheduleManager({
       <Card>
         <h2 className="font-display text-lg font-semibold text-vaony-ink">Weekly availability</h2>
         <p className="mt-1 text-xs text-vaony-ink/55">
-          Times are in your timezone (<span className="font-mono">{timezone}</span>).
+          Times are in your timezone (<span className="font-medium text-vaony-ink/80">{timezone}</span>).
           Students see them converted to theirs.
         </p>
         <ul className="mt-4 space-y-2">
@@ -61,7 +61,7 @@ export function ScheduleManager({
               <li key={s.id} className="flex items-center justify-between rounded-xl border border-vaony-ink/8 p-3">
                 <span className="text-sm text-vaony-ink">
                   <strong>{WEEKDAYS[s.weekday]}</strong>{" "}
-                  <span className="font-mono text-xs">{s.startTime}–{s.endTime}</span>
+                  <span className="text-xs">{s.startTime}–{s.endTime}</span>
                 </span>
                 <button
                   onClick={() => remove("slot", s.id)}
@@ -116,7 +116,7 @@ export function ScheduleManager({
           {blocks.map((b) => (
             <li key={b.id} className="flex items-center justify-between rounded-xl border border-vaony-ink/8 p-3">
               <span className="text-sm text-vaony-ink">
-                <span className="font-mono text-xs">
+                <span className="text-xs">
                   {formatInTz(b.startsAt, timezone, "MMM d HH:mm")} → {formatInTz(b.endsAt, timezone, "MMM d HH:mm")}
                 </span>
                 {b.reason && <span className="ml-2 text-xs text-vaony-ink/55">({b.reason})</span>}

@@ -58,7 +58,7 @@ export default async function CheckoutPage({
           </p>
         )}
         <div className="glass-card rounded-3xl p-6">
-          <p className="font-mono text-xs text-vaony-ink/50">order summary</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-ink/50">Order summary</p>
           <h1 className="mt-1 font-display text-xl font-bold text-vaony-ink">{summary.title}</h1>
           <p className="mt-1 text-sm text-vaony-ink/60">{summary.detail}</p>
           <p className="mt-4 border-t border-vaony-ink/8 pt-4 font-display text-3xl font-bold text-vaony-ink">

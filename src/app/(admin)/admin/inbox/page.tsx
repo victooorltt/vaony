@@ -23,12 +23,12 @@ export default async function AdminInboxPage() {
               <div className="flex items-start justify-between">
                 <div>
                   <p className="font-display font-semibold text-vaony-ink">{m.subject}</p>
-                  <p className="font-mono text-xs text-vaony-ink/55">
+                  <p className="text-xs text-vaony-ink/55">
                     {m.name} · <a href={`mailto:${m.email}`} className="text-vaony-blue hover:underline">{m.email}</a>
                     {m.phone && ` · ${m.phone}`}
                   </p>
                 </div>
-                <span className="font-mono text-[11px] text-vaony-ink/45">
+                <span className="text-[11px] text-vaony-ink/45">
                   {formatInTz(m.createdAt, "America/Mexico_City", "MMM d, HH:mm")}
                 </span>
               </div>

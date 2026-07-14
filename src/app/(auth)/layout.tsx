@@ -16,7 +16,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="glass-card mt-8 w-full max-w-md rounded-3xl p-8 shadow-xl shadow-vaony-blue/10">
         {children}
       </div>
-      <p className="mt-6 font-mono text-xs text-vaony-ink/40">
+      <p className="mt-6 text-xs text-vaony-ink/40">
         secure session · JWT + refresh rotation
       </p>
     </div>

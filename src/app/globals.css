@@ -9,9 +9,8 @@
   --color-vaony-amber: #ffb020;
   --color-vaony-grid: rgba(41, 36, 253, 0.07);
 
-  --font-display: var(--font-inter), ui-sans-serif, sans-serif;
+  --font-display: var(--font-sora), ui-sans-serif, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 
   --animate-draw: draw 2.4s ease-out forwards;
   --animate-float: float 7s ease-in-out infinite;

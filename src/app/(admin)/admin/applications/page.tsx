@@ -27,7 +27,7 @@ export default async function AdminApplicationsPage() {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-display font-semibold text-vaony-ink">{a.fullName}</p>
-                  <p className="font-mono text-xs text-vaony-ink/55">
+                  <p className="text-xs text-vaony-ink/55">
                     {a.email} · {a.specialization} · {a.yearsExperience} yrs ·{" "}
                     {formatInTz(a.createdAt, "America/Mexico_City", "MMM d, yyyy")}
                   </p>

@@ -40,7 +40,7 @@ export default async function AdminPaymentsPage() {
       <div className="overflow-x-auto rounded-2xl border border-vaony-ink/8 bg-white">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-vaony-ink/8 text-left font-mono text-[11px] uppercase tracking-wider text-vaony-ink/50">
+            <tr className="border-b border-vaony-ink/8 text-left text-[11px] uppercase tracking-wider text-vaony-ink/50">
               <th className="px-4 py-3">Date</th>
               <th className="px-4 py-3">Payer</th>
               <th className="px-4 py-3">Concept</th>
@@ -52,7 +52,7 @@ export default async function AdminPaymentsPage() {
           <tbody className="divide-y divide-vaony-ink/5">
             {payments.map((p) => (
               <tr key={p.id}>
-                <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-vaony-ink/60">
+                <td className="whitespace-nowrap px-4 py-3 text-xs text-vaony-ink/60">
                   {formatInTz(p.createdAt, "America/Mexico_City", "MMM d, yyyy HH:mm")}
                 </td>
                 <td className="px-4 py-3 text-vaony-ink">
@@ -61,8 +61,8 @@ export default async function AdminPaymentsPage() {
                 <td className="px-4 py-3 text-vaony-ink/70">
                   {p.booking?.course.title ?? p.purchase?.package.name ?? "—"}
                 </td>
-                <td className="px-4 py-3 font-mono text-xs">{p.provider.toLowerCase()}</td>
-                <td className="whitespace-nowrap px-4 py-3 font-mono font-medium">
+                <td className="px-4 py-3 text-xs">{p.provider.toLowerCase()}</td>
+                <td className="whitespace-nowrap px-4 py-3 font-medium">
                   {formatMoney(p.amount, p.currency)}
                 </td>
                 <td className="px-4 py-3">

@@ -1,6 +1,3 @@
-// Vaony — data model. SQLite in dev (no native enums: role/status fields are
-// validated strings constrained by Zod at the API boundary).
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,100 +8,98 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String?
-  googleId     String?  @unique
-  role         String   @default("STUDENT") // ADMIN | STUDENT | TEACHER
-  firstName    String
-  lastName     String
-  avatarUrl    String?
-  phone        String?
-  timezone     String   @default("America/Mexico_City")
-  status       String   @default("ACTIVE") // ACTIVE | SUSPENDED
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  refreshTokens      RefreshToken[]
-  passwordResets     PasswordReset[]
-  teacherProfile     TeacherProfile?
-  enrollments        Enrollment[]         @relation("StudentEnrollments")
-  teacherEnrollments Enrollment[]         @relation("TeacherEnrollments")
-  studentBookings    Booking[]            @relation("StudentBookings")
-  teacherBookings    Booking[]            @relation("TeacherBookings")
+  id                 String             @id @default(cuid())
+  email              String             @unique
+  passwordHash       String?
+  googleId           String?            @unique
+  role               String             @default("STUDENT")
+  firstName          String
+  lastName           String
+  avatarUrl          String?
+  phone              String?
+  timezone           String             @default("America/Mexico_City")
+  status             String             @default("ACTIVE")
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
   availabilitySlots  AvailabilitySlot[]
   blockedTimes       BlockedTime[]
-  payments           Payment[]
-  reviewsGiven       Review[]             @relation("ReviewAuthor")
-  reviewsReceived    Review[]             @relation("ReviewTarget")
-  studentConvos      Conversation[]       @relation("StudentConvos")
-  teacherConvos      Conversation[]       @relation("TeacherConvos")
+  studentBookings    Booking[]          @relation("StudentBookings")
+  teacherBookings    Booking[]          @relation("TeacherBookings")
+  studentConvos      Conversation[]     @relation("StudentConvos")
+  teacherConvos      Conversation[]     @relation("TeacherConvos")
+  enrollments        Enrollment[]       @relation("StudentEnrollments")
+  teacherEnrollments Enrollment[]       @relation("TeacherEnrollments")
+  materialsReceived  Material[]         @relation("MaterialStudent")
+  materialsUploaded  Material[]         @relation("MaterialUploader")
   messages           Message[]
-  materialsUploaded  Material[]           @relation("MaterialUploader")
-  materialsReceived  Material[]           @relation("MaterialStudent")
   notifications      Notification[]
   packagePurchases   PackagePurchase[]
+  passwordResets     PasswordReset[]
+  payments           Payment[]
+  refreshTokens      RefreshToken[]
+  reviewsGiven       Review[]           @relation("ReviewAuthor")
+  reviewsReceived    Review[]           @relation("ReviewTarget")
+  teacherProfile     TeacherProfile?
 }
 
 model RefreshToken {
   id        String    @id @default(cuid())
   token     String    @unique
   userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
   revokedAt DateTime?
   createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model PasswordReset {
   id        String    @id @default(cuid())
   token     String    @unique
   userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
   usedAt    DateTime?
   createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model TeacherProfile {
-  id             String  @id @default(cuid())
-  userId         String  @unique
-  user           User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title          String? // e.g. "M.Sc. Mechanical Engineering"
+  id             String               @id @default(cuid())
+  userId         String               @unique
+  title          String?
   specialization String?
   bio            String?
-  languages      String  @default("English") // comma-separated
-  ratingAvg      Float   @default(0)
-  ratingCount    Int     @default(0)
+  languages      String               @default("English")
+  ratingAvg      Float                @default(0)
+  ratingCount    Int                  @default(0)
   linkedinUrl    String?
   githubUrl      String?
   websiteUrl     String?
-  featured       Boolean @default(false)
-
+  featured       Boolean              @default(false)
+  courses        CourseTeacher[]
   credentials    Credential[]
   portfolioItems PortfolioItem[]
+  user           User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   softwareTags   TeacherSoftwareTag[]
-  courses        CourseTeacher[]
 }
 
 model Credential {
   id          String         @id @default(cuid())
   profileId   String
-  profile     TeacherProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   title       String
   institution String
   fileUrl     String?
   createdAt   DateTime       @default(now())
+  profile     TeacherProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
 
 model PortfolioItem {
   id        String         @id @default(cuid())
   profileId String
-  profile   TeacherProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   title     String
-  type      String // IMAGE | PDF | LINK
+  type      String
   url       String
   createdAt DateTime       @default(now())
+  profile   TeacherProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
 
 model SoftwareTag {
@@ -131,25 +126,24 @@ model Category {
 }
 
 model Course {
-  id              String   @id @default(cuid())
+  id              String          @id @default(cuid())
   title           String
-  slug            String   @unique
+  slug            String          @unique
   description     String
   shortDesc       String
   categoryId      String
-  category        Category @relation(fields: [categoryId], references: [id])
-  level           String   @default("BEGINNER") // BEGINNER | INTERMEDIATE | ADVANCED
-  durationMinutes Int      @default(60)
+  level           String          @default("BEGINNER")
+  durationMinutes Int             @default(60)
   price           Float
-  currency        String   @default("USD")
-  published       Boolean  @default(true)
-  featured        Boolean  @default(false)
-  createdAt       DateTime @default(now())
-
-  teachers    CourseTeacher[]
-  enrollments Enrollment[]
-  bookings    Booking[]
-  materials   Material[]
+  currency        String          @default("USD")
+  published       Boolean         @default(true)
+  featured        Boolean         @default(false)
+  createdAt       DateTime        @default(now())
+  bookings        Booking[]
+  category        Category        @relation(fields: [categoryId], references: [id])
+  teachers        CourseTeacher[]
+  enrollments     Enrollment[]
+  materials       Material[]
 }
 
 model CourseTeacher {
@@ -164,14 +158,14 @@ model CourseTeacher {
 model Enrollment {
   id        String   @id @default(cuid())
   studentId String
-  student   User     @relation("StudentEnrollments", fields: [studentId], references: [id], onDelete: Cascade)
   courseId  String
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   teacherId String
-  teacher   User     @relation("TeacherEnrollments", fields: [teacherId], references: [id])
-  status    String   @default("ACTIVE") // ACTIVE | COMPLETED | CANCELLED
-  progress  Int      @default(0) // 0-100
+  status    String   @default("ACTIVE")
+  progress  Int      @default(0)
   createdAt DateTime @default(now())
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  student   User     @relation("StudentEnrollments", fields: [studentId], references: [id], onDelete: Cascade)
+  teacher   User     @relation("TeacherEnrollments", fields: [teacherId], references: [id])
 
   @@unique([studentId, courseId])
 }
@@ -179,104 +173,101 @@ model Enrollment {
 model AvailabilitySlot {
   id        String @id @default(cuid())
   teacherId String
+  weekday   Int
+  startTime String
+  endTime   String
   teacher   User   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
-  weekday   Int // 0 = Sunday … 6 = Saturday (in teacher's timezone)
-  startTime String // "HH:mm"
-  endTime   String // "HH:mm"
 }
 
 model BlockedTime {
   id        String   @id @default(cuid())
   teacherId String
-  teacher   User     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
   startsAt  DateTime
   endsAt    DateTime
   reason    String?
+  teacher   User     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 }
 
 model Booking {
-  id         String   @id @default(cuid())
-  studentId  String
-  student    User     @relation("StudentBookings", fields: [studentId], references: [id])
-  teacherId  String
-  teacher    User     @relation("TeacherBookings", fields: [teacherId], references: [id])
-  courseId   String
-  course     Course   @relation(fields: [courseId], references: [id])
-  startsAt   DateTime // UTC
-  endsAt     DateTime // UTC
-  status     String   @default("PENDING") // PENDING | CONFIRMED | CANCELLED | COMPLETED | RESCHEDULED
-  meetingUrl String?
-  notes      String?
-  reminder24Sent Boolean @default(false)
-  reminder1Sent  Boolean @default(false)
-  createdAt  DateTime @default(now())
-
-  payment Payment?
-  review  Review?
+  id             String   @id @default(cuid())
+  studentId      String
+  teacherId      String
+  courseId       String
+  startsAt       DateTime
+  endsAt         DateTime
+  status         String   @default("PENDING")
+  meetingUrl     String?
+  notes          String?
+  reminder24Sent Boolean  @default(false)
+  reminder1Sent  Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  course         Course   @relation(fields: [courseId], references: [id])
+  student        User     @relation("StudentBookings", fields: [studentId], references: [id])
+  teacher        User     @relation("TeacherBookings", fields: [teacherId], references: [id])
+  payment        Payment?
+  review         Review?
 }
 
 model SessionPackage {
-  id          String  @id @default(cuid())
+  id          String            @id @default(cuid())
   name        String
   sessions    Int
   price       Float
-  currency    String  @default("USD")
-  discountPct Int     @default(0)
-  active      Boolean @default(true)
-
-  purchases PackagePurchase[]
+  currency    String            @default("USD")
+  discountPct Int               @default(0)
+  active      Boolean           @default(true)
+  purchases   PackagePurchase[]
 }
 
 model PackagePurchase {
-  id               String         @id @default(cuid())
-  userId           String
-  user             User           @relation(fields: [userId], references: [id])
-  packageId        String
-  package          SessionPackage @relation(fields: [packageId], references: [id])
-  sessionsLeft     Int
-  createdAt        DateTime       @default(now())
-  payment          Payment?
+  id           String         @id @default(cuid())
+  userId       String
+  packageId    String
+  sessionsLeft Int
+  createdAt    DateTime       @default(now())
+  package      SessionPackage @relation(fields: [packageId], references: [id])
+  user         User           @relation(fields: [userId], references: [id])
+  payment      Payment?
 }
 
 model Payment {
-  id          String   @id @default(cuid())
+  id          String           @id @default(cuid())
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  bookingId   String?  @unique
-  booking     Booking? @relation(fields: [bookingId], references: [id])
-  purchaseId  String?  @unique
-  purchase    PackagePurchase? @relation(fields: [purchaseId], references: [id])
-  provider    String // STRIPE | PAYPAL | MERCADOPAGO
+  bookingId   String?          @unique
+  purchaseId  String?          @unique
+  provider    String
   providerRef String?
   amount      Float
-  currency    String   @default("USD")
-  status      String   @default("PENDING") // PENDING | PAID | FAILED | REFUNDED
+  currency    String           @default("USD")
+  status      String           @default("PENDING")
   receiptUrl  String?
-  createdAt   DateTime @default(now())
+  createdAt   DateTime         @default(now())
+  booking     Booking?         @relation(fields: [bookingId], references: [id])
+  purchase    PackagePurchase? @relation(fields: [purchaseId], references: [id])
+  user        User             @relation(fields: [userId], references: [id])
 }
 
 model Review {
   id        String   @id @default(cuid())
   bookingId String   @unique
-  booking   Booking  @relation(fields: [bookingId], references: [id])
   studentId String
-  student   User     @relation("ReviewAuthor", fields: [studentId], references: [id])
   teacherId String
-  teacher   User     @relation("ReviewTarget", fields: [teacherId], references: [id])
-  rating    Int // 1-5
+  rating    Int
   comment   String?
   createdAt DateTime @default(now())
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  student   User     @relation("ReviewAuthor", fields: [studentId], references: [id])
+  teacher   User     @relation("ReviewTarget", fields: [teacherId], references: [id])
 }
 
 model Conversation {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   studentId String
-  student   User     @relation("StudentConvos", fields: [studentId], references: [id])
   teacherId String
-  teacher   User     @relation("TeacherConvos", fields: [teacherId], references: [id])
-  createdAt DateTime @default(now())
-
-  messages Message[]
+  createdAt DateTime  @default(now())
+  student   User      @relation("StudentConvos", fields: [studentId], references: [id])
+  teacher   User      @relation("TeacherConvos", fields: [teacherId], references: [id])
+  messages  Message[]
 
   @@unique([studentId, teacherId])
 }
@@ -284,9 +275,7 @@ model Conversation {
 model Message {
   id             String       @id @default(cuid())
   conversationId String
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   senderId       String
-  sender         User         @relation(fields: [senderId], references: [id])
   body           String
   fileUrl        String?
   fileName       String?
@@ -296,21 +285,23 @@ model Message {
   readAt         DateTime?
   flagged        Boolean      @default(false)
   deleted        Boolean      @default(false)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User         @relation(fields: [senderId], references: [id])
 }
 
 model Material {
   id         String   @id @default(cuid())
   uploaderId String
-  uploader   User     @relation("MaterialUploader", fields: [uploaderId], references: [id])
   courseId   String?
-  course     Course?  @relation(fields: [courseId], references: [id])
   studentId  String?
-  student    User?    @relation("MaterialStudent", fields: [studentId], references: [id])
   title      String
   fileUrl    String
   fileType   String
   sizeBytes  Int      @default(0)
   createdAt  DateTime @default(now())
+  course     Course?  @relation(fields: [courseId], references: [id])
+  student    User?    @relation("MaterialStudent", fields: [studentId], references: [id])
+  uploader   User     @relation("MaterialUploader", fields: [uploaderId], references: [id])
 }
 
 model TeacherApplication {
@@ -321,7 +312,7 @@ model TeacherApplication {
   yearsExperience Int
   bio             String
   cvUrl           String?
-  status          String   @default("PENDING") // PENDING | APPROVED | REJECTED
+  status          String   @default("PENDING")
   createdAt       DateTime @default(now())
 }
 
@@ -330,7 +321,7 @@ model GalleryItem {
   title     String
   category  String
   mediaUrl  String
-  type      String   @default("IMAGE") // IMAGE | VIDEO | PDF
+  type      String   @default("IMAGE")
   published Boolean  @default(true)
   createdAt DateTime @default(now())
 }
@@ -348,11 +339,11 @@ model ContactMessage {
 model Notification {
   id        String    @id @default(cuid())
   userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type      String // BOOKING | MESSAGE | PAYMENT | SYSTEM
+  type      String
   title     String
   body      String
   link      String?
   readAt    DateTime?
   createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

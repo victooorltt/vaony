@@ -2,17 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 
-/** Counts up when scrolled into view. Rendered in mono as a "measured value". */
+/** Counts up when scrolled into view. */
 export function AnimatedCounter({
   target,
   suffix = "",
   label,
-  notation,
 }: {
   target: number;
   suffix?: string;
   label: string;
-  notation: string; // e.g. "∑ students"
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(0);
@@ -46,12 +44,13 @@ export function AnimatedCounter({
 
   return (
     <div ref={ref} className="text-center">
-      <p className="font-mono text-xs text-vaony-blue/70">{notation}</p>
-      <p className="mt-1 font-display text-4xl font-bold text-vaony-ink sm:text-5xl">
+      <p className="font-display text-4xl font-bold text-vaony-ink sm:text-6xl">
         {value.toLocaleString("en-US")}
         {suffix}
       </p>
-      <p className="mt-1 text-sm text-vaony-ink/60">{label}</p>
+      <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-vaony-ink/50">
+        {label}
+      </p>
     </div>
   );
 }

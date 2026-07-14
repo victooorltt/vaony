@@ -49,13 +49,13 @@ export default async function TeacherStudentsPage() {
                 </div>
                 {history.length > 0 && (
                   <details className="mt-3">
-                    <summary className="cursor-pointer font-mono text-xs text-vaony-blue">
+                    <summary className="cursor-pointer text-xs text-vaony-blue">
                       session history ({history.length})
                     </summary>
                     <ul className="mt-2 space-y-1.5 border-l-2 border-vaony-blue/15 pl-4">
                       {history.slice(0, 8).map((s, i) => (
                         <li key={i} className="text-xs text-vaony-ink/65">
-                          <span className="font-mono">{formatInTz(s.startsAt, user.timezone, "MMM d, yyyy HH:mm")}</span>
+                          <span>{formatInTz(s.startsAt, user.timezone, "MMM d, yyyy HH:mm")}</span>
                           {" · "}{s.course.title}{" · "}
                           <span className="lowercase">{s.status}</span>
                           {s.notes && <span className="block text-vaony-ink/50">note: {s.notes}</span>}

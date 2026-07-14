@@ -17,17 +17,28 @@ interface TeacherOption {
   courses: { id: string; title: string }[];
 }
 
+export interface CalendarBooking {
+  id: string;
+  title: string;
+  teacherName: string;
+  startsAt: string;
+  endsAt: string;
+  status: string;
+}
+
 /**
- * Student booking calendar: month/week views of a teacher's free slots.
- * Slots come from the server in UTC; FullCalendar renders them in the
- * student's timezone via local Date objects.
+ * Student booking calendar: month/week views of a teacher's free slots,
+ * plus the student's own booked classes. Slots come from the server in UTC;
+ * FullCalendar renders them in the student's timezone via local Date objects.
  */
 export function BookingCalendar({
   teachers,
   timezone,
+  bookings = [],
 }: {
   teachers: TeacherOption[];
   timezone: string;
+  bookings?: CalendarBooking[];
 }) {
   const [teacherId, setTeacherId] = useState(teachers[0]?.id ?? "");
   const [courseId, setCourseId] = useState(teachers[0]?.courses[0]?.id ?? "");
@@ -42,31 +53,55 @@ export function BookingCalendar({
     [teachers, teacherId]
   );
 
+  const bookingEvents = useMemo(
+    () =>
+      bookings.map((b) => ({
+        id: `booking-${b.id}`,
+        title: b.title,
+        start: b.startsAt,
+        end: b.endsAt,
+        backgroundColor: b.status === "PENDING" ? "#FFB020" : "#2924FD",
+        borderColor: b.status === "PENDING" ? "#FFB020" : "#2924FD",
+        textColor: b.status === "PENDING" ? "#000B36" : "#FFFFFF",
+        extendedProps: { kind: "booking", teacherName: b.teacherName },
+      })),
+    [bookings]
+  );
+
   const fetchSlots = useCallback(
     async (info: EventSourceFuncArg) => {
-      if (!teacherId) return [];
+      const booked = bookingEvents.filter(
+        (e) => new Date(e.end) >= info.start && new Date(e.start) <= info.end
+      );
+      if (!teacherId) return booked;
       const params = new URLSearchParams({
         teacherId,
         from: info.start.toISOString(),
         to: info.end.toISOString(),
       });
       const res = await fetch(`/api/availability?${params}`);
-      if (!res.ok) return [];
+      if (!res.ok) return booked;
       const { slots } = (await res.json()) as { slots: { startsAt: string; endsAt: string }[] };
-      return slots.map((s) => ({
-        id: s.startsAt,
-        title: "Available",
-        start: s.startsAt,
-        end: s.endsAt,
-        backgroundColor: "rgba(41,36,253,0.12)",
-        borderColor: "#2924FD",
-        textColor: "#060D90",
-      }));
+      return [
+        ...booked,
+        ...slots.map((s) => ({
+          id: s.startsAt,
+          title: "Available",
+          start: s.startsAt,
+          end: s.endsAt,
+          backgroundColor: "rgba(41,36,253,0.12)",
+          borderColor: "#2924FD",
+          textColor: "#060D90",
+          extendedProps: { kind: "slot" },
+        })),
+      ];
     },
-    [teacherId]
+    [teacherId, bookingEvents]
   );
 
   function onEventClick(arg: EventClickArg) {
+    // Booked classes are informative, not selectable
+    if (arg.event.extendedProps.kind === "booking") return;
     if (!arg.event.start || !arg.event.end) return;
     setSelected({
       startsAt: arg.event.start.toISOString(),
@@ -126,12 +161,26 @@ export function BookingCalendar({
             id="cal-tz"
             disabled
             value={timezone}
-            className="w-full rounded-xl border border-vaony-ink/10 bg-vaony-ink/3 px-4 py-2.5 font-mono text-xs text-vaony-ink/60"
+            className="w-full rounded-xl border border-vaony-ink/10 bg-vaony-ink/3 px-4 py-2.5 text-xs text-vaony-ink/60"
           />
         </FieldWrap>
       </div>
 
       <div className="rounded-2xl border border-vaony-ink/8 bg-white p-4">
+        <div className="mb-3 flex flex-wrap items-center gap-4 text-xs text-vaony-ink/60">
+          <span className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-sm border border-vaony-blue bg-vaony-blue/15" />
+            Available slot
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-sm bg-vaony-blue" />
+            Your class
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-sm bg-vaony-amber" />
+            Awaiting payment
+          </span>
+        </div>
         <FullCalendar
           ref={calendarRef}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -154,7 +203,9 @@ export function BookingCalendar({
       {selected && (
         <div className="glass-card flex flex-col items-start justify-between gap-4 rounded-2xl p-5 sm:flex-row sm:items-center">
           <div>
-            <p className="font-mono text-xs text-vaony-blue">selected slot</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-blue">
+              Selected slot
+            </p>
             <p className="mt-1 font-display text-lg font-semibold text-vaony-ink">
               {formatInTz(selected.startsAt, timezone)}
             </p>

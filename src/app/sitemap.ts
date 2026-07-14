@@ -11,7 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     db.teacherProfile.findMany({ select: { userId: true } }),
   ]);
 
-  const staticPages = ["", "/courses", "/teachers", "/about", "/gallery", "/contact", "/apply-teacher"].map(
+  const staticPages = ["", "/courses", "/teachers", "/about", "/contact", "/apply-teacher"].map(
     (p) => ({ url: `${BASE}${p}`, changeFrequency: "weekly" as const, priority: p === "" ? 1 : 0.8 })
   );
 

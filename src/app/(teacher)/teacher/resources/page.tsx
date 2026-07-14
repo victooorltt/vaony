@@ -59,7 +59,7 @@ export default async function TeacherResourcesPage() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-medium text-vaony-ink">{m.title}</p>
-                  <p className="font-mono text-[11px] text-vaony-ink/50">
+                  <p className="text-[11px] text-vaony-ink/50">
                     {m.course?.title ?? `${m.student?.firstName} ${m.student?.lastName}`} ·{" "}
                     {formatInTz(m.createdAt, user.timezone, "MMM d, yyyy")} ·{" "}
                     {(m.sizeBytes / 1024 / 1024).toFixed(1)} MB

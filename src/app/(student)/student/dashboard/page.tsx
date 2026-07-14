@@ -35,7 +35,7 @@ export default async function StudentDashboard() {
   return (
     <div className="mx-auto max-w-5xl space-y-8">
       <div>
-        <p className="font-mono text-xs text-vaony-blue">student.dashboard</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-blue">Student dashboard</p>
         <h1 className="mt-1 font-display text-3xl font-bold text-vaony-ink">
           Hi, {user.firstName}
         </h1>
@@ -46,7 +46,7 @@ export default async function StudentDashboard() {
         <Card className="brand-gradient grid-pattern-dark border-0 text-white">
           <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <div>
-              <p className="font-mono text-xs text-white/60">next class</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/60">Next class</p>
               <p className="mt-1 font-display text-xl font-semibold">{next.course.title}</p>
               <p className="mt-1 text-sm text-white/75">
                 with {next.teacher.firstName} {next.teacher.lastName} ·{" "}
@@ -139,7 +139,7 @@ export default async function StudentDashboard() {
               <Card key={b.id} className="flex items-center justify-between py-4">
                 <div>
                   <p className="font-medium text-vaony-ink">{b.course.title}</p>
-                  <p className="font-mono text-xs text-vaony-ink/55">
+                  <p className="text-xs text-vaony-ink/55">
                     {formatInTz(b.startsAt, user.timezone)}
                   </p>
                 </div>

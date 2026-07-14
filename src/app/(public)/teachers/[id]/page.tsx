@@ -83,7 +83,7 @@ export default async function TeacherPublicProfile({
               {profile.user.firstName} {profile.user.lastName}
             </h1>
             <p className="mt-1 text-vaony-ink/60">{profile.title}</p>
-            <p className="font-mono text-sm text-vaony-blue">{profile.specialization}</p>
+            <p className="text-sm text-vaony-blue">{profile.specialization}</p>
             <div className="mt-2 flex flex-wrap items-center gap-4">
               <Rating value={profile.ratingAvg} count={profile.ratingCount} />
               <span className="inline-flex items-center gap-1 text-xs text-vaony-ink/55">
@@ -148,7 +148,7 @@ export default async function TeacherPublicProfile({
                     <a href={p.url} target="_blank" rel="noopener noreferrer" className="font-medium text-vaony-blue hover:underline">
                       {p.title} ↗
                     </a>
-                    <p className="font-mono text-[11px] text-vaony-ink/45">{p.type.toLowerCase()}</p>
+                    <p className="text-[11px] text-vaony-ink/45">{p.type.toLowerCase()}</p>
                   </li>
                 ))}
               </ul>
@@ -187,7 +187,7 @@ export default async function TeacherPublicProfile({
             >
               <Badge tone="blue">{course.category.name}</Badge>
               <p className="mt-2 font-medium text-vaony-ink">{course.title}</p>
-              <p className="mt-1 font-mono text-sm text-vaony-deep">
+              <p className="mt-1 text-sm text-vaony-deep">
                 {formatMoney(course.price, course.currency)}/session
               </p>
             </Link>

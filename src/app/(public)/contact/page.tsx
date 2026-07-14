@@ -12,7 +12,7 @@ export default function ContactPage() {
     <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
       <div className="grid gap-12 lg:grid-cols-[380px_1fr]">
         <div>
-          <p className="font-mono text-xs uppercase tracking-wider text-vaony-blue">contact</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-blue">contact</p>
           <h1 className="mt-2 font-display text-4xl font-bold text-vaony-ink">
             Ask us anything
           </h1>
@@ -32,7 +32,7 @@ export default function ContactPage() {
             </li>
           </ul>
           <div className="grid-pattern mt-8 rounded-2xl border border-vaony-ink/8 bg-white p-5">
-            <p className="font-mono text-xs text-vaony-blue">response_time</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-blue">Typical response time</p>
             <p className="mt-1 font-display text-2xl font-bold text-vaony-ink">&lt; 24 h</p>
           </div>
         </div>

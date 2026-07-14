@@ -23,7 +23,7 @@ export function Rating({
           />
         ))}
       </span>
-      <span className="font-mono text-xs text-vaony-ink/60">
+      <span className="text-xs text-vaony-ink/60">
         {value > 0 ? value.toFixed(1) : "—"}
         {typeof count === "number" && count > 0 && ` (${count})`}
       </span>

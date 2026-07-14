@@ -28,7 +28,7 @@ export default async function StudentPaymentsPage() {
         <div className="mt-6 overflow-x-auto rounded-2xl border border-vaony-ink/8 bg-white">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-vaony-ink/8 text-left font-mono text-[11px] uppercase tracking-wider text-vaony-ink/50">
+              <tr className="border-b border-vaony-ink/8 text-left text-[11px] uppercase tracking-wider text-vaony-ink/50">
                 <th className="px-4 py-3">Date</th>
                 <th className="px-4 py-3">Description</th>
                 <th className="px-4 py-3">Method</th>
@@ -40,16 +40,16 @@ export default async function StudentPaymentsPage() {
             <tbody className="divide-y divide-vaony-ink/5">
               {payments.map((p) => (
                 <tr key={p.id}>
-                  <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-vaony-ink/60">
+                  <td className="whitespace-nowrap px-4 py-3 text-xs text-vaony-ink/60">
                     {formatInTz(p.createdAt, user.timezone, "MMM d, yyyy")}
                   </td>
                   <td className="px-4 py-3 text-vaony-ink">
                     {p.booking?.course.title ?? p.purchase?.package.name ?? "Payment"}
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs text-vaony-ink/60">
+                  <td className="px-4 py-3 text-xs text-vaony-ink/60">
                     {p.provider.toLowerCase()}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-3 font-mono font-medium text-vaony-ink">
+                  <td className="whitespace-nowrap px-4 py-3 font-medium text-vaony-ink">
                     {formatMoney(p.amount, p.currency)}
                   </td>
                   <td className="px-4 py-3">

@@ -49,7 +49,7 @@ export default async function StudentCoursesPage() {
                   {e.teacher.firstName} {e.teacher.lastName}
                 </span>
               </div>
-              <p className="mt-3 font-mono text-xs text-vaony-ink/50">progress: {e.progress}%</p>
+              <p className="mt-3 text-xs text-vaony-ink/50">progress: {e.progress}%</p>
               <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-vaony-ink/8">
                 <div className="brand-gradient h-full rounded-full" style={{ width: `${e.progress}%` }} />
               </div>

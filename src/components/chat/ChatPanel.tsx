@@ -85,7 +85,7 @@ export function ChatPanel({ meId }: { meId: string }) {
                 </span>
               </span>
               {c.unread > 0 && (
-                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-vaony-blue px-1.5 font-mono text-[10px] font-bold text-white">
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-vaony-blue px-1.5 text-[10px] font-bold text-white">
                   {c.unread}
                 </span>
               )}
@@ -247,7 +247,7 @@ function ChatThread({
           <p className="text-sm font-medium text-vaony-ink">
             {other.firstName} {other.lastName}
           </p>
-          <p className="font-mono text-[10px] text-vaony-ink/45">
+          <p className="text-[10px] text-vaony-ink/45">
             {otherTyping ? "typing…" : "chat history is saved"}
           </p>
         </div>
@@ -289,7 +289,7 @@ function ChatThread({
                 )}
                 <span
                   className={cn(
-                    "mt-1 flex items-center justify-end gap-1 font-mono text-[10px]",
+                    "mt-1 flex items-center justify-end gap-1 text-[10px]",
                     mine ? "text-white/60" : "text-vaony-ink/40"
                   )}
                 >

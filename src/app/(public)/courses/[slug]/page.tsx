@@ -70,7 +70,7 @@ export default async function CourseDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <nav className="font-mono text-xs text-vaony-ink/50">
+      <nav className="text-xs text-vaony-ink/50">
         <Link href="/courses" className="hover:text-vaony-blue">courses</Link>
         {" / "}
         <span>{course.slug}</span>
@@ -136,11 +136,11 @@ export default async function CourseDetailPage({
         {/* Enrollment card */}
         <aside className="h-fit lg:sticky lg:top-24">
           <div className="glass-card grid-pattern rounded-3xl p-7 shadow-xl shadow-vaony-blue/10">
-            <p className="font-mono text-xs text-vaony-ink/50">price per session</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-ink/50">Price per session</p>
             <p className="mt-1 font-display text-4xl font-bold text-vaony-ink">
               {formatMoney(course.price, course.currency)}
             </p>
-            <p className="mt-1 font-mono text-xs text-vaony-ink/50">
+            <p className="mt-1 text-xs text-vaony-ink/50">
               {course.durationMinutes} min · live · 1-on-1
             </p>
             <div className="mt-6 space-y-3">
@@ -151,7 +151,7 @@ export default async function CourseDetailPage({
                 Ask a question first
               </ButtonLink>
             </div>
-            <p className="mt-5 text-center font-mono text-[11px] text-vaony-ink/45">
+            <p className="mt-5 text-center text-[11px] text-vaony-ink/45">
               save 10% with 5-packs · 20% with 10-packs
             </p>
           </div>

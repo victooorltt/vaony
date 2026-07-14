@@ -12,7 +12,6 @@ const links = [
   { href: "/courses", label: "Courses" },
   { href: "/teachers", label: "Teachers" },
   { href: "/about", label: "About" },
-  { href: "/gallery", label: "Gallery" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -39,10 +38,7 @@ export function Navbar() {
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href="/" aria-label="Vaony home" className="flex items-center gap-2">
-          <Image src="/brand/vaony_solo_logo.svg" alt="" width={30} height={25} priority />
-          <span className="font-display text-lg font-bold tracking-tight text-vaony-ink">
-            vaony
-          </span>
+          <Image src="/brand/vaony_con_letra.svg" alt="" width={100} height={100} priority />
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">

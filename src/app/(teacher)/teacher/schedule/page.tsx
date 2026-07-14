@@ -62,7 +62,7 @@ export default async function TeacherSchedulePage() {
                   <p className="font-medium text-vaony-ink">
                     {b.course.title} · {b.student.firstName} {b.student.lastName}
                   </p>
-                  <p className="font-mono text-xs text-vaony-ink/55">
+                  <p className="text-xs text-vaony-ink/55">
                     {formatInTz(b.startsAt, user.timezone)}
                   </p>
                 </div>

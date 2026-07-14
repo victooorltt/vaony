@@ -35,7 +35,7 @@ export function Badge({
 /** Software / tool tag rendered in mono — part of the technical identity */
 export function SoftwareBadge({ name }: { name: string }) {
   return (
-    <span className="inline-flex items-center rounded-md border border-vaony-blue/20 bg-vaony-blue/5 px-2 py-0.5 font-mono text-[11px] text-vaony-deep">
+    <span className="inline-flex items-center rounded-md border border-vaony-blue/20 bg-vaony-blue/5 px-2 py-0.5 text-[11px] text-vaony-deep">
       {name}
     </span>
   );

@@ -16,17 +16,17 @@ export const metadata: Metadata = {
 
 const values = [
   {
-    k: "axiom 1",
+    k: "What we believe",
     title: "Anyone can learn this",
     body: "Exact sciences aren't a talent lottery. With the right explanation, at the right pace, the hardest subject becomes a sequence of small, solvable steps.",
   },
   {
-    k: "axiom 2",
+    k: "Who teaches",
     title: "Practitioners teach best",
     body: "Our teachers use MATLAB, G-code and Navier-Stokes at work, not just on a whiteboard. You learn the subject the way it's actually used.",
   },
   {
-    k: "axiom 3",
+    k: "How we teach",
     title: "One-on-one or nothing",
     body: "No crowded group calls, no prerecorded playlists. Every session is built around your syllabus, your gaps, and your goals.",
   },
@@ -40,7 +40,7 @@ export default async function AboutPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-      <p className="font-mono text-xs uppercase tracking-wider text-vaony-blue">about vaony</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-blue">about vaony</p>
       <h1 className="mt-2 max-w-2xl font-display text-4xl font-bold text-vaony-ink">
         We exist so nobody drops a career over one subject
       </h1>
@@ -55,7 +55,7 @@ export default async function AboutPage() {
         {values.map((v, i) => (
           <Reveal key={v.k} delay={i * 90}>
             <div className="grid-pattern h-full rounded-2xl border border-vaony-ink/8 bg-white p-6">
-              <p className="font-mono text-xs text-vaony-blue">{v.k}</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-blue">{v.k}</p>
               <h2 className="mt-2 font-display text-lg font-semibold text-vaony-ink">{v.title}</h2>
               <p className="mt-2 text-sm text-vaony-ink/65">{v.body}</p>
             </div>

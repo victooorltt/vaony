@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function ApplyTeacherPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-      <p className="font-mono text-xs uppercase tracking-wider text-vaony-blue">
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-blue">
         join the team
       </p>
       <h1 className="mt-2 font-display text-4xl font-bold text-vaony-ink">

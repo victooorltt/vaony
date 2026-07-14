@@ -12,7 +12,7 @@ export default async function AdminUsersPage() {
       <div className="mt-6 overflow-x-auto rounded-2xl border border-vaony-ink/8 bg-white">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-vaony-ink/8 text-left font-mono text-[11px] uppercase tracking-wider text-vaony-ink/50">
+            <tr className="border-b border-vaony-ink/8 text-left text-[11px] uppercase tracking-wider text-vaony-ink/50">
               <th className="px-4 py-3">User</th>
               <th className="px-4 py-3">Role</th>
               <th className="px-4 py-3">Status</th>
@@ -27,7 +27,7 @@ export default async function AdminUsersPage() {
                     <Avatar firstName={u.firstName} lastName={u.lastName} src={u.avatarUrl} size="sm" />
                     <div>
                       <p className="font-medium text-vaony-ink">{u.firstName} {u.lastName}</p>
-                      <p className="font-mono text-[11px] text-vaony-ink/50">{u.email}</p>
+                      <p className="text-[11px] text-vaony-ink/50">{u.email}</p>
                     </div>
                   </div>
                 </td>

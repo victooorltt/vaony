@@ -98,12 +98,12 @@ export default async function HomePage() {
 
 
       {/* ---- Counters ---- */}
-      <section className="bg-vaony-paper py-14">
+      <section className="bg-vaony-paper py-14 pt-25">
         <Reveal>
           <div className="mx-auto grid max-w-4xl grid-cols-1 gap-10 px-4 sm:grid-cols-3">
-            <AnimatedCounter target={520} suffix="+" notation="∑ students" label="students helped" />
-            <AnimatedCounter target={4300} suffix="+" notation="∑ hours" label="hours taught" />
-            <AnimatedCounter target={12} notation="|courses|" label="active subjects" />
+            <AnimatedCounter target={520} suffix="+" label="students helped" />
+            <AnimatedCounter target={4300} suffix="+" label="hours taught" />
+            <AnimatedCounter target={12} label="active subjects" />
           </div>
         </Reveal>
       </section>
@@ -113,7 +113,7 @@ export default async function HomePage() {
         <Reveal>
           <div className="flex items-end justify-between">
             <div>
-              <p className="font-mono text-xs uppercase tracking-wider text-vaony-blue">featured</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-blue">featured</p>
               <h2 className="mt-2 font-display text-3xl font-bold text-vaony-ink">
                 Popular courses
               </h2>
@@ -139,7 +139,7 @@ export default async function HomePage() {
                 </h3>
                 <p className="mt-2 flex-1 text-sm text-vaony-ink/60">{course.shortDesc}</p>
                 <div className="mt-4 flex items-center justify-between border-t border-transparent pt-4">
-                  <span className="font-mono text-sm font-semibold text-vaony-deep">
+                  <span className="font-display text-sm font-semibold text-vaony-deep">
                     {formatMoney(course.price, course.currency)}
                     <span className="font-normal text-vaony-ink/40">/h</span>
                   </span>
@@ -157,7 +157,7 @@ export default async function HomePage() {
       <section className="grid-pattern-dark section-cut-top section-cut-bottom bg-vaony-ink py-24 text-white">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <Reveal>
-            <p className="font-mono text-xs uppercase tracking-wider text-vaony-amber">why vaony</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-amber">why vaony</p>
             <h2 className="mt-2 max-w-xl font-display text-3xl font-bold">
               Built for people who need the subject to finally make sense
             </h2>
@@ -179,7 +179,7 @@ export default async function HomePage() {
       {/* ---- Featured teachers ---- */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <Reveal>
-          <p className="font-mono text-xs uppercase tracking-wider text-vaony-blue">the team</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-blue">the team</p>
           <h2 className="mt-2 font-display text-3xl font-bold text-vaony-ink">
             Learn from working specialists
           </h2>
@@ -217,7 +217,9 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
         <Reveal>
           <div className="brand-gradient grid-pattern-dark relative overflow-hidden rounded-3xl px-6 py-14 text-center text-white sm:px-12">
-            <p className="font-mono text-sm text-white/70">first_session.book()</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/70">
+              Your first class
+            </p>
             <h2 className="mx-auto mt-3 max-w-2xl font-display text-3xl font-bold sm:text-4xl">
               Stop rereading the same chapter. Get someone who explains it.
             </h2>

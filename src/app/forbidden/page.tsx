@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function ForbiddenPage() {
   return (
     <div className="grid-pattern flex min-h-screen flex-col items-center justify-center bg-vaony-paper px-4 text-center">
-      <p className="font-mono text-sm text-vaony-blue">HTTP 403</p>
+      <p className="text-sm text-vaony-blue">HTTP 403</p>
       <h1 className="mt-2 font-display text-3xl font-bold text-vaony-ink">
         This area belongs to a different role
       </h1>

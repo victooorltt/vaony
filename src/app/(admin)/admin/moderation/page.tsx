@@ -29,7 +29,7 @@ export default async function AdminModerationPage() {
         {messages.map((m) => (
           <div key={m.id} className="rounded-2xl border border-vaony-ink/8 bg-white p-4">
             <div className="flex items-center justify-between gap-2">
-              <p className="font-mono text-[11px] text-vaony-ink/50">
+              <p className="text-[11px] text-vaony-ink/50">
                 {m.sender.firstName} {m.sender.lastName} ({m.sender.role.toLowerCase()}) →{" "}
                 {m.conversation.student.firstName}/{m.conversation.teacher.firstName} ·{" "}
                 {formatInTz(m.sentAt, "America/Mexico_City", "MMM d HH:mm")}

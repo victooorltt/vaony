@@ -20,7 +20,6 @@ import {
   FolderPlusIcon,
   HomeIcon,
   IdentificationIcon,
-  PhotoIcon,
   ShieldExclamationIcon,
   UserPlusIcon,
   UsersIcon,
@@ -65,7 +64,6 @@ const NAV: Record<PortalKind, NavItem[]> = {
     { href: "/admin/courses", label: "Courses", icon: AcademicCapIcon },
     { href: "/admin/payments", label: "Payments", icon: BanknotesIcon },
     { href: "/admin/applications", label: "Applications", icon: UserPlusIcon },
-    { href: "/admin/gallery", label: "Gallery", icon: PhotoIcon },
     { href: "/admin/moderation", label: "Moderation", icon: ShieldExclamationIcon },
     { href: "/admin/inbox", label: "Contact inbox", icon: EnvelopeIcon },
   ],
@@ -127,7 +125,7 @@ export function PortalShell({
       <Link href="/" className="flex items-center gap-2 px-5 py-5">
         <Image src="/brand/vaony_solo_logo.svg" alt="Vaony" width={28} height={23} />
         <span className="font-display text-lg font-bold text-white">vaony</span>
-        <span className="ml-1 rounded bg-white/10 px-1.5 py-0.5 font-mono text-[10px] uppercase text-white/60">
+        <span className="ml-1 rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/60">
           {title}
         </span>
       </Link>
@@ -158,7 +156,7 @@ export function PortalShell({
             <p className="truncate text-sm font-medium text-white">
               {user.firstName} {user.lastName}
             </p>
-            <p className="truncate font-mono text-[10px] text-white/45">{user.email}</p>
+            <p className="truncate text-[10px] text-white/45">{user.email}</p>
           </div>
           <button
             onClick={logout}
@@ -210,7 +208,7 @@ export function PortalShell({
           >
             <BellIcon className="h-5 w-5" />
             {unreadCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-vaony-amber px-1 font-mono text-[10px] font-bold text-vaony-ink">
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-vaony-amber px-1 text-[10px] font-bold text-vaony-ink">
                 {unreadCount > 9 ? "9+" : unreadCount}
               </span>
             )}

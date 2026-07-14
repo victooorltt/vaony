@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { db } from "@/lib/db";
 import { formatMoney, cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
@@ -18,15 +19,24 @@ const levelTone = { BEGINNER: "green", INTERMEDIATE: "amber", ADVANCED: "red" } 
 export default async function CoursesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{ category?: string; q?: string }>;
 }) {
-  const { category } = await searchParams;
+  const { category, q } = await searchParams;
+  const query = q?.trim();
   const [categories, courses] = await Promise.all([
     db.category.findMany({ orderBy: { order: "asc" } }),
     db.course.findMany({
       where: {
         published: true,
         ...(category ? { category: { slug: category } } : {}),
+        ...(query
+          ? {
+              OR: [
+                { title: { contains: query, mode: "insensitive" as const } },
+                { shortDesc: { contains: query, mode: "insensitive" as const } },
+              ],
+            }
+          : {}),
       },
       include: {
         category: true,
@@ -38,7 +48,7 @@ export default async function CoursesPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-      <p className="font-mono text-xs uppercase tracking-wider text-vaony-blue">catalog</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-blue">catalog</p>
       <h1 className="mt-2 font-display text-4xl font-bold text-vaony-ink">
         Courses &amp; services
       </h1>
@@ -47,10 +57,29 @@ export default async function CoursesPage({
         Prices are per one-hour session — save with 5 and 10 session packs.
       </p>
 
+      {/* Search (GET form — server-rendered, shareable URLs) */}
+      <form action="/courses" className="mt-8 max-w-md">
+        {category && <input type="hidden" name="category" value={category} />}
+        <label htmlFor="course-search" className="sr-only">
+          Search courses
+        </label>
+        <div className="relative">
+          <MagnifyingGlassIcon className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-vaony-ink/40" />
+          <input
+            id="course-search"
+            type="search"
+            name="q"
+            defaultValue={query ?? ""}
+            placeholder="Search by subject, topic or course name…"
+            className="w-full rounded-xl border border-vaony-ink/15 bg-white py-3 pl-11 pr-4 text-sm text-vaony-ink placeholder:text-vaony-ink/40 focus:border-vaony-blue focus:outline-none"
+          />
+        </div>
+      </form>
+
       {/* Category filters (server-side, SEO-friendly URLs) */}
-      <div className="mt-8 flex flex-wrap gap-2">
+      <div className="mt-5 flex flex-wrap gap-2">
         <Link
-          href="/courses"
+          href={query ? `/courses?q=${encodeURIComponent(query)}` : "/courses"}
           className={cn(
             "rounded-full px-4 py-1.5 text-sm font-medium transition",
             !category
@@ -63,7 +92,7 @@ export default async function CoursesPage({
         {categories.map((c) => (
           <Link
             key={c.id}
-            href={`/courses?category=${c.slug}`}
+            href={`/courses?category=${c.slug}${query ? `&q=${encodeURIComponent(query)}` : ""}`}
             className={cn(
               "rounded-full px-4 py-1.5 text-sm font-medium transition",
               category === c.slug
@@ -92,13 +121,13 @@ export default async function CoursesPage({
                 </Link>
               </h2>
               <p className="mt-2 flex-1 text-sm text-vaony-ink/60">{course.shortDesc}</p>
-              <p className="mt-3 font-mono text-xs text-vaony-ink/50">
+              <p className="mt-3 text-xs text-vaony-ink/50">
                 {course.durationMinutes} min · online · 1-on-1
                 {course.teachers[0] &&
                   ` · with ${course.teachers[0].profile.user.firstName} ${course.teachers[0].profile.user.lastName}`}
               </p>
               <div className="mt-4 flex items-center justify-between border-t border-vaony-ink/8 pt-4">
-                <span className="font-mono text-lg font-semibold text-vaony-deep">
+                <span className="font-display text-lg font-semibold text-vaony-deep">
                   {formatMoney(course.price, course.currency)}
                   <span className="text-xs font-normal text-vaony-ink/40">/session</span>
                 </span>
@@ -116,7 +145,9 @@ export default async function CoursesPage({
 
       {courses.length === 0 && (
         <p className="mt-12 text-center text-vaony-ink/50">
-          No courses in this category yet. Check back soon.
+          {query
+            ? `No courses match “${query}”. Try a different term or clear the search.`
+            : "No courses in this category yet. Check back soon."}
         </p>
       )}
     </div>

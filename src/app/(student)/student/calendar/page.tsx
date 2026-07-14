@@ -44,13 +44,24 @@ export default async function StudentCalendarPage() {
       courses: t.courses.map((ct) => ({ id: ct.course.id, title: ct.course.title })),
     }));
 
+  // The student's own classes (upcoming and recent) shown on the calendar
+  const calendarBookings = [...myBookings, ...pastBookings].map((b) => ({
+    id: b.id,
+    title: b.course.title,
+    teacherName: `${b.teacher.firstName} ${b.teacher.lastName}`,
+    startsAt: b.startsAt.toISOString(),
+    endsAt: b.endsAt.toISOString(),
+    status: b.status,
+  }));
+
   return (
     <div className="mx-auto max-w-5xl space-y-8">
       <div>
-        <h1 className="font-display text-3xl font-bold text-vaony-ink">Book a class</h1>
+        <h1 className="font-display text-3xl font-bold text-vaony-ink">Calendar</h1>
         <p className="mt-1 text-sm text-vaony-ink/60">
-          Pick a teacher and click any available slot. Times are shown in{" "}
-          <span className="font-mono">{user.timezone}</span>.
+          Your booked classes and each teacher&apos;s open slots — click any available
+          slot to book. Times are shown in{" "}
+          <span className="font-medium text-vaony-ink/80">{user.timezone}</span>.
         </p>
       </div>
 
@@ -61,7 +72,7 @@ export default async function StudentCalendarPage() {
           action={<ButtonLink href="/courses">Browse courses</ButtonLink>}
         />
       ) : (
-        <BookingCalendar teachers={teachers} timezone={user.timezone} />
+        <BookingCalendar teachers={teachers} timezone={user.timezone} bookings={calendarBookings} />
       )}
 
       {myBookings.length > 0 && (
@@ -77,7 +88,7 @@ export default async function StudentCalendarPage() {
               >
                 <div>
                   <p className="font-medium text-vaony-ink">{b.course.title}</p>
-                  <p className="font-mono text-xs text-vaony-ink/55">
+                  <p className="text-xs text-vaony-ink/55">
                     {formatInTz(b.startsAt, user.timezone)} · {b.teacher.firstName}{" "}
                     {b.teacher.lastName}
                   </p>
@@ -108,7 +119,7 @@ export default async function StudentCalendarPage() {
               >
                 <div>
                   <p className="font-medium text-vaony-ink">{b.course.title}</p>
-                  <p className="font-mono text-xs text-vaony-ink/55">
+                  <p className="text-xs text-vaony-ink/55">
                     {formatInTz(b.startsAt, user.timezone)} · {b.teacher.firstName}{" "}
                     {b.teacher.lastName}
                   </p>
