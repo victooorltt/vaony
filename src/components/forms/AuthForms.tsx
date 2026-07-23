@@ -21,7 +21,7 @@ function GoogleButton() {
         <path fill="#FBBC05" d="M5.3 14.2c-.3-.7-.4-1.4-.4-2.2s.1-1.5.4-2.2V6.6H1.1C.4 8.2 0 10 0 12s.4 3.8 1.1 5.4l4.2-3.2z" />
         <path fill="#EA4335" d="M12 4.8c1.8 0 3 .7 3.7 1.4l3.5-3.4C17.9 1 15.2 0 12 0 7.2 0 3.1 2.6 1.1 6.6l4.2 3.2c.9-2.9 3.6-5 6.7-5z" />
       </svg>
-      Continue with Google
+      Continuar con Google
     </a>
   );
 }
@@ -29,7 +29,7 @@ function GoogleButton() {
 function Divider() {
   return (
     <div className="flex items-center gap-3 text-xs text-vaony-ink/40">
-      <span className="h-px flex-1 bg-vaony-ink/10" /> or <span className="h-px flex-1 bg-vaony-ink/10" />
+      <span className="h-px flex-1 bg-vaony-ink/10" /> o <span className="h-px flex-1 bg-vaony-ink/10" />
     </div>
   );
 }
@@ -51,7 +51,7 @@ function useFormPost(endpoint: string) {
     const json = (await res.json().catch(() => ({}))) as { error?: string; redirect?: string };
     setBusy(false);
     if (!res.ok) {
-      setServerError(json.error ?? "Something went wrong. Try again.");
+      setServerError(json.error ?? "Algo salió mal. Inténtalo de nuevo.");
       return;
     }
     if (onOk) onOk(json);
@@ -85,32 +85,32 @@ export function LoginForm() {
         void post(parsed.data);
       }}
     >
-      <h1 className="font-display text-2xl font-bold text-vaony-ink">Welcome back</h1>
+      <h1 className="font-display text-2xl font-bold text-vaony-ink">Bienvenido de nuevo</h1>
       <GoogleButton />
       <Divider />
-      <FieldWrap label="Email" error={errors.email} htmlFor="email">
+      <FieldWrap label="Correo electrónico" error={errors.email} htmlFor="email">
         <Input id="email" name="email" type="email" autoComplete="email" />
       </FieldWrap>
-      <FieldWrap label="Password" error={errors.password} htmlFor="password">
+      <FieldWrap label="Contraseña" error={errors.password} htmlFor="password">
         <Input id="password" name="password" type="password" autoComplete="current-password" />
       </FieldWrap>
       {(serverError || oauthError) && (
         <p className="text-sm text-red-600" role="alert">
           {serverError ||
             (oauthError === "google_not_configured"
-              ? "Google sign-in isn't configured yet on this environment."
-              : "Google sign-in failed. Try email and password.")}
+              ? "El inicio de sesión con Google aún no está configurado en este entorno."
+              : "Falló el inicio de sesión con Google. Usa tu correo y contraseña.")}
         </p>
       )}
       <Button type="submit" className="w-full" disabled={busy}>
-        {busy ? "Signing in…" : "Log in"}
+        {busy ? "Iniciando sesión…" : "Iniciar sesión"}
       </Button>
       <div className="flex items-center justify-between text-xs">
         <Link href="/forgot-password" className="text-vaony-blue hover:underline">
-          Forgot password?
+          ¿Olvidaste tu contraseña?
         </Link>
         <Link href="/register" className="text-vaony-blue hover:underline">
-          Create account
+          Crear cuenta
         </Link>
       </div>
     </form>
@@ -133,30 +133,35 @@ export function RegisterForm() {
         void post(parsed.data);
       }}
     >
-      <h1 className="font-display text-2xl font-bold text-vaony-ink">Create your account</h1>
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-vaony-blue">
+          Cuenta de estudiante
+        </p>
+        <h1 className="mt-1 font-display text-2xl font-bold text-vaony-ink">Crea tu cuenta</h1>
+      </div>
       <GoogleButton />
       <Divider />
       <div className="grid grid-cols-2 gap-3">
-        <FieldWrap label="First name" error={errors.firstName} htmlFor="firstName">
+        <FieldWrap label="Nombre" error={errors.firstName} htmlFor="firstName">
           <Input id="firstName" name="firstName" autoComplete="given-name" />
         </FieldWrap>
-        <FieldWrap label="Last name" error={errors.lastName} htmlFor="lastName">
+        <FieldWrap label="Apellidos" error={errors.lastName} htmlFor="lastName">
           <Input id="lastName" name="lastName" autoComplete="family-name" />
         </FieldWrap>
       </div>
-      <FieldWrap label="Email" error={errors.email} htmlFor="reg-email">
+      <FieldWrap label="Correo electrónico" error={errors.email} htmlFor="reg-email">
         <Input id="reg-email" name="email" type="email" autoComplete="email" />
       </FieldWrap>
-      <FieldWrap label="Password" error={errors.password} htmlFor="reg-password" hint="At least 8 characters.">
+      <FieldWrap label="Contraseña" error={errors.password} htmlFor="reg-password" hint="Al menos 8 caracteres.">
         <Input id="reg-password" name="password" type="password" autoComplete="new-password" />
       </FieldWrap>
-      <FieldWrap label="Confirm password" error={errors.confirmPassword} htmlFor="confirmPassword">
+      <FieldWrap label="Confirmar contraseña" error={errors.confirmPassword} htmlFor="confirmPassword">
         <Input id="confirmPassword" name="confirmPassword" type="password" autoComplete="new-password" />
       </FieldWrap>
       <label className="flex items-start gap-2 text-xs text-vaony-ink/70">
         <input type="checkbox" name="acceptTerms" className="mt-0.5 accent-vaony-blue" />
         <span>
-          I accept the Terms &amp; Conditions and the Privacy Policy.
+          Acepto los Términos y Condiciones y la Política de Privacidad.
           {errors.acceptTerms && (
             <span className="block text-red-600">{errors.acceptTerms}</span>
           )}
@@ -164,11 +169,17 @@ export function RegisterForm() {
       </label>
       {serverError && <p className="text-sm text-red-600" role="alert">{serverError}</p>}
       <Button type="submit" className="w-full" disabled={busy}>
-        {busy ? "Creating account…" : "Create free account"}
+        {busy ? "Creando cuenta…" : "Crear cuenta gratis"}
       </Button>
       <p className="text-center text-xs text-vaony-ink/60">
-        Already have an account?{" "}
-        <Link href="/login" className="text-vaony-blue hover:underline">Log in</Link>
+        ¿Quieres enseñar en Vaony?{" "}
+        <Link href="/apply-teacher" className="text-vaony-blue hover:underline">
+          Regístrate como profesor
+        </Link>
+      </p>
+      <p className="text-center text-xs text-vaony-ink/60">
+        ¿Ya tienes cuenta?{" "}
+        <Link href="/login" className="text-vaony-blue hover:underline">Inicia sesión</Link>
       </p>
     </form>
   );
@@ -181,10 +192,10 @@ export function ForgotPasswordForm() {
   if (sent) {
     return (
       <div className="text-center">
-        <h1 className="font-display text-xl font-bold text-vaony-ink">Check your email</h1>
+        <h1 className="font-display text-xl font-bold text-vaony-ink">Revisa tu correo</h1>
         <p className="mt-2 text-sm text-vaony-ink/60">
-          If an account exists for that address, a reset link is on its way. It
-          expires in 1 hour.
+          Si existe una cuenta con esa dirección, te enviaremos un enlace para
+          restablecer tu contraseña. Caduca en 1 hora.
         </p>
       </div>
     );
@@ -204,19 +215,19 @@ export function ForgotPasswordForm() {
         void post(parsed.data, () => setSent(true));
       }}
     >
-      <h1 className="font-display text-2xl font-bold text-vaony-ink">Reset your password</h1>
+      <h1 className="font-display text-2xl font-bold text-vaony-ink">Restablece tu contraseña</h1>
       <p className="text-sm text-vaony-ink/60">
-        Enter your email and we&apos;ll send you a reset link.
+        Introduce tu correo y te enviaremos un enlace para restablecerla.
       </p>
-      <FieldWrap label="Email" error={errors.email} htmlFor="fp-email">
+      <FieldWrap label="Correo electrónico" error={errors.email} htmlFor="fp-email">
         <Input id="fp-email" name="email" type="email" autoComplete="email" />
       </FieldWrap>
       {serverError && <p className="text-sm text-red-600" role="alert">{serverError}</p>}
       <Button type="submit" className="w-full" disabled={busy}>
-        {busy ? "Sending…" : "Send reset link"}
+        {busy ? "Enviando…" : "Enviar enlace"}
       </Button>
       <p className="text-center text-xs">
-        <Link href="/login" className="text-vaony-blue hover:underline">← Back to login</Link>
+        <Link href="/login" className="text-vaony-blue hover:underline">← Volver a iniciar sesión</Link>
       </p>
     </form>
   );
@@ -240,16 +251,16 @@ export function ResetPasswordForm() {
         void post(parsed.data, () => router.push("/login"));
       }}
     >
-      <h1 className="font-display text-2xl font-bold text-vaony-ink">Choose a new password</h1>
-      <FieldWrap label="New password" error={errors.password} htmlFor="rp-password">
+      <h1 className="font-display text-2xl font-bold text-vaony-ink">Elige una nueva contraseña</h1>
+      <FieldWrap label="Nueva contraseña" error={errors.password} htmlFor="rp-password">
         <Input id="rp-password" name="password" type="password" autoComplete="new-password" />
       </FieldWrap>
-      <FieldWrap label="Confirm password" error={errors.confirmPassword} htmlFor="rp-confirm">
+      <FieldWrap label="Confirmar contraseña" error={errors.confirmPassword} htmlFor="rp-confirm">
         <Input id="rp-confirm" name="confirmPassword" type="password" autoComplete="new-password" />
       </FieldWrap>
       {serverError && <p className="text-sm text-red-600" role="alert">{serverError}</p>}
       <Button type="submit" className="w-full" disabled={busy}>
-        {busy ? "Saving…" : "Save new password"}
+        {busy ? "Guardando…" : "Guardar nueva contraseña"}
       </Button>
     </form>
   );

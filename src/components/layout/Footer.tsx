@@ -3,25 +3,25 @@ import Link from "next/link";
 
 const columns = [
   {
-    title: "Platform",
+    title: "Plataforma",
     links: [
-      { href: "/courses", label: "Course catalog" },
-      { href: "/teachers", label: "Our teachers" },
-      { href: "/apply-teacher", label: "Teach on Vaony" },
+      { href: "/courses", label: "Catálogo de cursos" },
+      { href: "/teachers", label: "Nuestros profesores" },
+      { href: "/apply-teacher", label: "Enseña en Vaony" },
     ],
   },
   {
-    title: "Company",
+    title: "Empresa",
     links: [
-      { href: "/about", label: "About us" },
-      { href: "/contact", label: "Contact" },
+      { href: "/about", label: "Sobre nosotros" },
+      { href: "/contact", label: "Contacto" },
     ],
   },
   {
-    title: "Account",
+    title: "Cuenta",
     links: [
-      { href: "/login", label: "Log in" },
-      { href: "/register", label: "Create account" },
+      { href: "/login", label: "Iniciar sesión" },
+      { href: "/register", label: "Crear cuenta" },
     ],
   },
 ];
@@ -40,8 +40,8 @@ export function Footer() {
               className="brightness-0 invert"
             />
             <p className="mt-4 max-w-xs text-sm text-white/60">
-              One-on-one online tutoring in exact sciences, engineering and
-              mathematics — taught by qualified engineers and specialists.
+              Clases online personalizadas de ciencias exactas, ingeniería y
+              matemáticas — impartidas por ingenieros y especialistas cualificados.
             </p>
           </div>
           {columns.map((col) => (
@@ -63,9 +63,9 @@ export function Footer() {
         </div>
         <div className="mt-12 flex flex-col items-center justify-between gap-3 pt-6 sm:flex-row">
           <p className="text-xs text-white/40">
-            © {new Date().getFullYear()} Vaony. All rights reserved.
+            © {new Date().getFullYear()} Vaony. Todos los derechos reservados.
           </p>
-          <p className="text-xs text-white/40">100% online · one-on-one · worldwide</p>
+          <p className="text-xs text-white/40">100% online · clases individuales · en todo el mundo</p>
         </div>
       </div>
     </footer>

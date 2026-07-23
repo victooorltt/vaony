@@ -210,7 +210,7 @@ export default async function HomePage() {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <ButtonLink href="/register" size="lg">
+              <ButtonLink href="/register/student" size="lg">
                 Reservar tu primera clase <ArrowRightIcon className="h-4 w-4 ml-1" />
               </ButtonLink>
               <ButtonLink href="/courses" variant="secondary" size="lg">
@@ -582,7 +582,7 @@ export default async function HomePage() {
               Encuentra al profesor ideal para desarrollar tus habilidades profesionales y técnicas.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
-              <ButtonLink href="/register" variant="amber" size="lg" className="shadow-lg">
+              <ButtonLink href="/register/student" variant="amber" size="lg" className="shadow-lg">
                 Reservar tu primera clase <ArrowRightIcon className="h-4 w-4 ml-1" />
               </ButtonLink>
               <ButtonLink
