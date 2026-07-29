@@ -12,23 +12,30 @@ export async function PATCH(request: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid input" }, { status: 400 });
   }
-  const { softwareTags, linkedinUrl, githubUrl, websiteUrl, ...fields } = parsed.data;
+  const {
+    softwareTags,
+    linkedinUrl,
+    githubUrl,
+    websiteUrl,
+    youtubeUrl,
+    extraSubjects,
+    yearsExperience,
+    ...fields
+  } = parsed.data;
+
+  const optional = {
+    linkedinUrl: linkedinUrl || null,
+    githubUrl: githubUrl || null,
+    websiteUrl: websiteUrl || null,
+    youtubeUrl: youtubeUrl || null,
+    extraSubjects: extraSubjects?.trim() || null,
+    yearsExperience: yearsExperience === "" || yearsExperience === undefined ? null : yearsExperience,
+  };
 
   const profile = await db.teacherProfile.upsert({
     where: { userId: auth.user.id },
-    update: {
-      ...fields,
-      linkedinUrl: linkedinUrl || null,
-      githubUrl: githubUrl || null,
-      websiteUrl: websiteUrl || null,
-    },
-    create: {
-      userId: auth.user.id,
-      ...fields,
-      linkedinUrl: linkedinUrl || null,
-      githubUrl: githubUrl || null,
-      websiteUrl: websiteUrl || null,
-    },
+    update: { ...fields, ...optional },
+    create: { userId: auth.user.id, ...fields, ...optional },
   });
 
   if (softwareTags) {

@@ -32,6 +32,10 @@ export default async function TeacherProfilePage() {
             linkedinUrl: profile.linkedinUrl ?? "",
             githubUrl: profile.githubUrl ?? "",
             websiteUrl: profile.websiteUrl ?? "",
+            youtubeUrl: profile.youtubeUrl ?? "",
+            extraSubjects: profile.extraSubjects ?? "",
+            yearsExperience:
+              profile.yearsExperience === null ? "" : String(profile.yearsExperience),
             softwareTags: profile.softwareTags.map((st) => st.tag.name),
             credentials: profile.credentials,
             portfolioItems: profile.portfolioItems,

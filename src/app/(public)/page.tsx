@@ -18,6 +18,7 @@ import {
   BookOpenIcon,
   ArrowRightIcon,
   CheckBadgeIcon,
+  BanknotesIcon,
 } from "@heroicons/react/24/outline";
 import { db } from "@/lib/db";
 import { formatMoney } from "@/lib/utils";
@@ -157,6 +158,27 @@ const testimonials = [
     author: "Mateo S.",
     role: "Desarrollador Software",
     rating: 5,
+  },
+];
+
+const teacherReasons = [
+  {
+    icon: BanknotesIcon,
+    title: "Tú fijas tu tarifa y tu horario",
+    description:
+      "Publicas tu disponibilidad semanal y cobras por sesión. Sin exclusividad ni mínimo de horas.",
+  },
+  {
+    icon: UserGroupIcon,
+    title: "Estudiantes que ya te buscan",
+    description:
+      "Apareces en el directorio con tu especialidad, tus certificados y tus proyectos a la vista.",
+  },
+  {
+    icon: CalendarDaysIcon,
+    title: "Agenda y pagos resueltos",
+    description:
+      "Gestionamos reservas, cobros y recordatorios. Tú te ocupas de dar la clase.",
   },
 ];
 
@@ -495,6 +517,106 @@ export default async function HomePage() {
               </Link>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* ---- SECCIÓN: CONVIÉRTETE EN PROFESOR ---- */}
+      <section id="ensena-en-vaony" className="scroll-mt-24 bg-white py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <Reveal>
+            <div className="relative overflow-hidden rounded-3xl border border-vaony-amber/30 bg-vaony-amber/8 px-6 py-12 sm:px-12 sm:py-14">
+              {/* The V-angle of the logo, drawn once as a quiet amber rule */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -right-24 -top-32 hidden h-[520px] w-px rotate-[30deg] bg-linear-to-b from-transparent via-vaony-amber/40 to-transparent lg:block"
+              />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -right-10 -top-32 hidden h-[520px] w-px rotate-[30deg] bg-linear-to-b from-transparent via-vaony-amber/25 to-transparent lg:block"
+              />
+
+              <div className="relative grid items-center gap-12 lg:grid-cols-12">
+                <div className="lg:col-span-7">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-amber-700">
+                    ENSEÑA EN VAONY
+                  </p>
+                  <h2 className="mt-2 font-display text-3xl font-bold text-vaony-ink sm:text-4xl">
+                    ¿Y si el experto eres tú?
+                  </h2>
+                  <p className="mt-4 max-w-xl text-lg leading-relaxed text-vaony-ink/75">
+                    Cada semana llegan estudiantes buscando exactamente lo que tú
+                    dominas. Comparte tu experiencia en clases online, a tu ritmo y
+                    desde donde estés.
+                  </p>
+
+                  <ul className="mt-8 space-y-5">
+                    {teacherReasons.map((r) => (
+                      <li key={r.title} className="flex gap-4">
+                        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-vaony-amber/25 text-amber-700">
+                          <r.icon className="h-5 w-5" />
+                        </span>
+                        <div>
+                          <h3 className="font-display text-base font-bold text-vaony-ink">
+                            {r.title}
+                          </h3>
+                          <p className="mt-0.5 text-sm leading-relaxed text-vaony-ink/70">
+                            {r.description}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-9 flex flex-wrap items-center gap-4">
+                    <ButtonLink href="/apply-teacher" variant="amber" size="lg" className="shadow-lg shadow-vaony-amber/25">
+                      Postúlate como profesor <ArrowRightIcon className="ml-1 h-4 w-4" />
+                    </ButtonLink>
+                    <Link
+                      href="/contact"
+                      className="text-sm font-semibold text-vaony-ink/70 underline-offset-4 hover:text-vaony-ink hover:underline"
+                    >
+                      Hablar con el equipo
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Illustrative earnings ledger — a real calculation, so it's laid out as one */}
+                <div className="lg:col-span-5">
+                  <div className="rounded-2xl border border-vaony-ink/8 bg-white p-6 shadow-xl shadow-vaony-amber/10 sm:p-7">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-vaony-ink/45">
+                      Tú pones el precio
+                    </p>
+                    <div className="mt-4 flex items-baseline gap-1.5">
+                      <span className="font-display text-5xl font-extrabold text-vaony-ink">$25</span>
+                      <span className="text-sm font-medium text-vaony-ink/55">USD / hora</span>
+                    </div>
+
+                    <dl className="mt-6 space-y-3 border-t border-vaony-ink/8 pt-5 text-sm">
+                      <div className="flex items-center justify-between">
+                        <dt className="text-vaony-ink/60">Clases por semana</dt>
+                        <dd className="font-semibold text-vaony-ink">3</dd>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <dt className="text-vaony-ink/60">Clases al mes</dt>
+                        <dd className="font-semibold text-vaony-ink">12</dd>
+                      </div>
+                      <div className="flex items-center justify-between border-t border-vaony-ink/8 pt-3">
+                        <dt className="font-semibold text-vaony-ink">Ingreso estimado</dt>
+                        <dd className="font-display text-xl font-extrabold text-amber-700">
+                          $300 USD
+                        </dd>
+                      </div>
+                    </dl>
+
+                    <p className="mt-5 text-[11px] leading-relaxed text-vaony-ink/45">
+                      Ejemplo ilustrativo. Tú decides tu tarifa, tus materias y cuántas
+                      clases das cada semana.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 

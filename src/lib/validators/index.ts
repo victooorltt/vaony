@@ -46,11 +46,18 @@ export const contactSchema = z.object({
 });
 
 export const teacherApplicationSchema = z.object({
-  fullName: z.string().min(3, "Enter your full name").max(120),
-  email: z.string().email("Enter a valid email"),
-  specialization: z.string().min(2, "Enter your specialization").max(160),
-  yearsExperience: z.coerce.number().int().min(0).max(60),
-  bio: z.string().min(30, "Tell us about your background (min. 30 characters)").max(4000),
+  fullName: z.string().min(3, "Escribe tu nombre completo").max(120),
+  email: z.string().email("Escribe un correo válido"),
+  specialization: z.string().min(2, "Indica tu especialidad").max(160),
+  yearsExperience: z.coerce
+    .number({ invalid_type_error: "Indica tus años de experiencia" })
+    .int()
+    .min(0, "Indica tus años de experiencia")
+    .max(60, "Como máximo 60 años"),
+  bio: z
+    .string()
+    .min(30, "Cuéntanos sobre tu trayectoria (mínimo 30 caracteres)")
+    .max(4000),
 });
 
 export const bookingSchema = z.object({
@@ -97,5 +104,11 @@ export const teacherProfileSchema = z.object({
   linkedinUrl: z.string().url().optional().or(z.literal("")),
   githubUrl: z.string().url().optional().or(z.literal("")),
   websiteUrl: z.string().url().optional().or(z.literal("")),
+  youtubeUrl: z.string().url().optional().or(z.literal("")),
+  extraSubjects: z.string().max(600).optional(),
+  // Empty string must stay empty — coercing it first would silently mean "0 years"
+  yearsExperience: z
+    .union([z.literal(""), z.coerce.number().int().min(0).max(60)])
+    .optional(),
   softwareTags: z.array(z.string().min(1).max(40)).max(30).optional(),
 });

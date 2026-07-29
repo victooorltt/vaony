@@ -12,14 +12,15 @@ const sora = Sora({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
   title: {
-    default: "Vaony — Online Tutoring in Exact Sciences, Engineering & Math",
+    default: "Vaony — Clases online de ciencias exactas, ingeniería y matemáticas",
     template: "%s | Vaony",
   },
   description:
-    "One-on-one online tutoring in mathematics, physics, programming, CNC, fluid mechanics and more. Learn with qualified engineers and specialists.",
+    "Clases particulares online de matemáticas, física, programación, CNC, mecánica de fluidos y más. Aprende con ingenieros y especialistas cualificados.",
   openGraph: {
     siteName: "Vaony",
     type: "website",
+    locale: "es_ES",
   },
 };
 
@@ -28,7 +29,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
-      lang="en"
+      lang="es"
       className={`${inter.variable} ${sora.variable}`}
     >
       <body>{children}</body>

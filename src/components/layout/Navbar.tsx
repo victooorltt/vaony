@@ -83,13 +83,13 @@ export function Navbar() {
           <Image src="/brand/vaony_con_letra.svg" alt="" width={100} height={100} priority />
         </Link>
 
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-0.5 lg:flex">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               className={cn(
-                "rounded-lg px-3 py-2 text-sm font-medium transition",
+                "whitespace-nowrap rounded-lg px-2.5 py-2 text-sm font-medium transition",
                 pathname.startsWith(l.href)
                   ? "text-vaony-blue"
                   : "text-vaony-ink/70 hover:text-vaony-blue"
@@ -100,7 +100,23 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 lg:flex">
+          {/* The other side of the marketplace — amber marks the teacher path */}
+          <Link
+            href="/apply-teacher"
+            className={cn(
+              "inline-flex items-center gap-2 whitespace-nowrap rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors",
+              pathname.startsWith("/apply-teacher")
+                ? "border-vaony-amber/60 bg-vaony-amber/10 text-vaony-ink"
+                : "border-vaony-ink/12 bg-white text-vaony-ink/80 hover:border-vaony-amber/60 hover:text-vaony-ink"
+            )}
+          >
+            <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-vaony-amber" />
+            Conviértete en profesor
+          </Link>
+
+          <span aria-hidden className="h-5 w-px bg-vaony-ink/10" />
+
           <ButtonLink href="/login" variant="ghost" size="sm">
             Iniciar sesión
           </ButtonLink>
@@ -146,7 +162,7 @@ export function Navbar() {
         </div>
 
         <button
-          className="rounded-lg p-2 text-vaony-ink md:hidden"
+          className="rounded-lg p-2 text-vaony-ink lg:hidden"
           aria-label={open ? "Cerrar menú" : "Abrir menú"}
           onClick={() => setOpen((v) => !v)}
         >
@@ -155,7 +171,7 @@ export function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-vaony-ink/8 bg-vaony-paper px-4 pb-6 pt-2 md:hidden">
+        <div className="border-t border-vaony-ink/8 bg-vaony-paper px-4 pb-6 pt-2 lg:hidden">
           {links.map((l) => (
             <Link
               key={l.href}
@@ -165,6 +181,14 @@ export function Navbar() {
               {l.label}
             </Link>
           ))}
+
+          <Link
+            href="/apply-teacher"
+            className="mt-2 flex items-center gap-2 rounded-lg border border-vaony-ink/12 bg-white px-3 py-2.5 text-sm font-medium text-vaony-ink hover:border-vaony-amber/60"
+          >
+            <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-vaony-amber" />
+            Conviértete en profesor
+          </Link>
 
           <p className="mt-4 px-3 text-xs font-semibold uppercase tracking-[0.14em] text-vaony-ink/40">
             Registrarse

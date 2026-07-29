@@ -18,6 +18,9 @@ interface ProfileData {
   linkedinUrl: string;
   githubUrl: string;
   websiteUrl: string;
+  youtubeUrl: string;
+  extraSubjects: string;
+  yearsExperience: string;
   softwareTags: string[];
   credentials: { id: string; title: string; institution: string; fileUrl: string | null }[];
   portfolioItems: { id: string; title: string; type: string; url: string }[];
@@ -95,8 +98,42 @@ export function TeacherProfileEditor({ profile }: { profile: ProfileData }) {
           <FieldWrap label="Biography" htmlFor="tp-bio" hint="Academic and professional background — this is your showcase.">
             <Textarea id="tp-bio" name="bio" defaultValue={profile.bio} className="min-h-36" />
           </FieldWrap>
-          <FieldWrap label="Languages of instruction" htmlFor="tp-lang" hint='Comma-separated, e.g. "Spanish, English"'>
-            <Input id="tp-lang" name="languages" defaultValue={profile.languages} />
+          <div className="grid gap-5 sm:grid-cols-2">
+            <FieldWrap label="Languages of instruction" htmlFor="tp-lang" hint='Comma-separated, e.g. "Spanish, English"'>
+              <Input id="tp-lang" name="languages" defaultValue={profile.languages} />
+            </FieldWrap>
+            <FieldWrap label="Years of experience" htmlFor="tp-years" hint="Shown on your card in the teacher directory.">
+              <Input
+                id="tp-years"
+                name="yearsExperience"
+                type="number"
+                min={0}
+                max={60}
+                defaultValue={profile.yearsExperience}
+              />
+            </FieldWrap>
+          </div>
+
+          <FieldWrap
+            label="Additional subjects"
+            htmlFor="tp-extra"
+            hint='Comma-separated topics you also prepare on request, e.g. "Blueprint reading, Metrology"'
+          >
+            <Input id="tp-extra" name="extraSubjects" defaultValue={profile.extraSubjects} />
+          </FieldWrap>
+
+          <FieldWrap
+            label="Intro video (YouTube)"
+            htmlFor="tp-yt"
+            hint="Paste the video link — students see it on your public page."
+          >
+            <Input
+              id="tp-yt"
+              name="youtubeUrl"
+              type="url"
+              defaultValue={profile.youtubeUrl}
+              placeholder="https://www.youtube.com/watch?v=…"
+            />
           </FieldWrap>
 
           <FieldWrap label="Software & tools" htmlFor="tp-tag" hint="Press Enter or Add after each tool (AutoCAD, MATLAB, Python…).">

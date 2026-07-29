@@ -74,6 +74,9 @@ model TeacherProfile {
   linkedinUrl    String?
   githubUrl      String?
   websiteUrl     String?
+  youtubeUrl     String?
+  extraSubjects  String?
+  yearsExperience Int?
   featured       Boolean              @default(false)
   courses        CourseTeacher[]
   credentials    Credential[]

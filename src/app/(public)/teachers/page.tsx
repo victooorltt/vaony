@@ -33,6 +33,8 @@ export default async function TeachersPage() {
           course: true,
         },
       },
+      // Certified badge = the teacher has credentials verified by Vaony
+      _count: { select: { credentials: true } },
     },
     orderBy: { ratingAvg: "desc" },
   });

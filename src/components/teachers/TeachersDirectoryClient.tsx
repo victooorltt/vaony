@@ -7,10 +7,13 @@ import {
   AcademicCapIcon,
   ClockIcon,
   HeartIcon,
-  MagnifyingGlassIcon,
+  ArrowRightIcon,
 } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconSolid, StarIcon } from "@heroicons/react/24/solid";
-import { Avatar } from "@/components/ui/Avatar";
+import {
+  HeartIcon as HeartIconSolid,
+  StarIcon,
+  CheckBadgeIcon,
+} from "@heroicons/react/24/solid";
 import { SoftwareBadge } from "@/components/ui/Badge";
 import { Reveal } from "@/components/ui/Reveal";
 import { formatMoney } from "@/lib/utils";
@@ -25,6 +28,7 @@ export interface TeacherWithDetails {
   ratingAvg: number;
   ratingCount: number;
   featured: boolean;
+  yearsExperience: number | null;
   user: {
     id: string;
     email: string;
@@ -49,6 +53,7 @@ export interface TeacherWithDetails {
       level: string;
     };
   }[];
+  _count: { credentials: number };
 }
 
 export interface CategoryWithDetails {
@@ -68,7 +73,6 @@ export default function TeachersDirectoryClient({
   categories,
 }: TeachersDirectoryClientProps) {
   // Filters & State
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategoryId, setSelectedCategoryId] = useState("all");
   const [selectedLevel, setSelectedLevel] = useState("all");
   const [selectedLanguage, setSelectedLanguage] = useState("all");
@@ -77,9 +81,6 @@ export default function TeachersDirectoryClient({
 
   // Favorites state
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-
-  // Search input bind (separated for input commit vs real-time)
-  const [searchInput, setSearchInput] = useState("");
 
   const toggleFavorite = (teacherId: string) => {
     setFavorites((prev) => {
@@ -93,60 +94,50 @@ export default function TeachersDirectoryClient({
     });
   };
 
-  // Helper static metadata mapping for each teacher
+  // Presentation-only status metadata, keyed by teacher email
   const teacherMetadata = useMemo(() => {
     const map: Record<
       string,
       {
-        yearsExp: number;
         status: "available" | "reservation";
         statusText: string;
         dotColor: string;
         microStatusText: string;
         microDotColor: string;
         topTeacher: boolean;
-        image: string;
       }
     > = {
       "elena.rios@vaony.com": {
-        yearsExp: 9,
         status: "available",
         statusText: "Disponible ahora",
         dotColor: "bg-emerald-500",
         microStatusText: "Disponible hoy",
         microDotColor: "bg-emerald-500",
         topTeacher: true,
-        image: "/teacher_female.jpg",
       },
       "daniel.mora@vaony.com": {
-        yearsExp: 7,
         status: "available",
         statusText: "Disponible ahora",
         dotColor: "bg-emerald-500",
-        microStatusText: "Responde en 2h",
+        microStatusText: "Responde en 2 h",
         microDotColor: "bg-blue-500",
         topTeacher: false,
-        image: "/teacher_male.jpg",
       },
       "sofia.leal@vaony.com": {
-        yearsExp: 8,
         status: "reservation",
         statusText: "Reserva próxima",
         dotColor: "bg-amber-500",
-        microStatusText: "Responde en 2h",
+        microStatusText: "Responde en 2 h",
         microDotColor: "bg-blue-500",
         topTeacher: false,
-        image: "/teacher_sofia.jpg",
       },
       "marco.vega@vaony.com": {
-        yearsExp: 6,
         status: "available",
         statusText: "Disponible ahora",
         dotColor: "bg-emerald-500",
         microStatusText: "Disponible hoy",
         microDotColor: "bg-emerald-500",
         topTeacher: true,
-        image: "/teacher_marco.jpg",
       },
     };
 
@@ -156,27 +147,14 @@ export default function TeachersDirectoryClient({
   const getMetadata = (email: string) => {
     return (
       teacherMetadata[email] || {
-        yearsExp: 5,
-        status: "available",
+        status: "available" as const,
         statusText: "Disponible ahora",
         dotColor: "bg-emerald-500",
         microStatusText: "Disponible hoy",
         microDotColor: "bg-emerald-500",
         topTeacher: false,
-        image: "/brand/vaony_solo_logo.svg",
       }
     );
-  };
-
-  // Perform search submission
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSearchQuery(searchInput);
-    // Smooth scroll down to directory section
-    const el = document.getElementById("directory-section");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
   // Main filter function
@@ -185,33 +163,7 @@ export default function TeachersDirectoryClient({
       .filter((teacher) => {
         const meta = getMetadata(teacher.user.email);
 
-        // 1. Search Query (name, title, specialization, tags, bio, courses)
-        if (searchQuery.trim()) {
-          const q = searchQuery.toLowerCase();
-          const fullName = `${teacher.user.firstName} ${teacher.user.lastName}`.toLowerCase();
-          const title = (teacher.title || "").toLowerCase();
-          const spec = (teacher.specialization || "").toLowerCase();
-          const bio = (teacher.bio || "").toLowerCase();
-          const tagsMatch = teacher.softwareTags.some((st) =>
-            st.tag.name.toLowerCase().includes(q)
-          );
-          const coursesMatch = teacher.courses.some((tc) =>
-            tc.course.title.toLowerCase().includes(q)
-          );
-
-          if (
-            !fullName.includes(q) &&
-            !title.includes(q) &&
-            !spec.includes(q) &&
-            !bio.includes(q) &&
-            !tagsMatch &&
-            !coursesMatch
-          ) {
-            return false;
-          }
-        }
-
-        // 2. Category Filter
+        // 1. Category Filter
         if (selectedCategoryId !== "all") {
           const hasCourseInCategory = teacher.courses.some(
             (tc) => tc.course.categoryId === selectedCategoryId
@@ -219,7 +171,7 @@ export default function TeachersDirectoryClient({
           if (!hasCourseInCategory) return false;
         }
 
-        // 3. Level Filter
+        // 2. Level Filter
         if (selectedLevel !== "all") {
           const hasCourseInLevel = teacher.courses.some(
             (tc) => tc.course.level === selectedLevel
@@ -227,13 +179,13 @@ export default function TeachersDirectoryClient({
           if (!hasCourseInLevel) return false;
         }
 
-        // 4. Language Filter
+        // 3. Language Filter
         if (selectedLanguage !== "all") {
           const langs = teacher.languages.toLowerCase();
           if (!langs.includes(selectedLanguage.toLowerCase())) return false;
         }
 
-        // 5. Availability Filter
+        // 4. Availability Filter
         if (selectedAvailability !== "all") {
           if (meta.status !== selectedAvailability) return false;
         }
@@ -261,7 +213,6 @@ export default function TeachersDirectoryClient({
       });
   }, [
     initialTeachers,
-    searchQuery,
     selectedCategoryId,
     selectedLevel,
     selectedLanguage,
@@ -269,6 +220,14 @@ export default function TeachersDirectoryClient({
     sortBy,
     teacherMetadata,
   ]);
+
+  const resetFilters = () => {
+    setSelectedCategoryId("all");
+    setSelectedLevel("all");
+    setSelectedLanguage("all");
+    setSelectedAvailability("all");
+    setSortBy("popular");
+  };
 
   // Sync category tab selection with select input and vice-versa
   const handleTabChange = (categoryId: string) => {
@@ -286,7 +245,7 @@ export default function TeachersDirectoryClient({
       <section className="relative overflow-hidden pt-12 pb-20 lg:pt-16 lg:pb-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-20">
-            
+
             {/* Left Info Column */}
             <div className="relative z-10 lg:col-span-11">
               <Reveal delay={100}>
@@ -303,34 +262,9 @@ export default function TeachersDirectoryClient({
                 </p>
               </Reveal>
 
-              {/* Search Bar Form */}
-              <Reveal delay={300}>
-                <form
-                  onSubmit={handleSearchSubmit}
-                  className="mt-8 flex max-w-lg items-center gap-2 rounded-2xl border border-vaony-ink/10 bg-white p-2 shadow-xl shadow-vaony-ink/3 focus-within:border-vaony-blue/50 focus-within:ring-2 focus-within:ring-vaony-blue/15 transition-all duration-300"
-                >
-                  <div className="flex flex-1 items-center gap-2 pl-3">
-                    <MagnifyingGlassIcon className="h-5 w-5 text-vaony-ink/40" />
-                    <input
-                      type="text"
-                      value={searchInput}
-                      onChange={(e) => setSearchInput(e.target.value)}
-                      placeholder="¿Qué querés aprender hoy?"
-                      className="w-full bg-transparent py-2 text-sm text-vaony-ink outline-none placeholder:text-vaony-ink/40"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="flex h-10 w-10 items-center justify-center rounded-xl bg-vaony-blue text-white shadow-md shadow-vaony-blue/20 hover:bg-vaony-deep hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
-                  >
-                    <MagnifyingGlassIcon className="h-5 w-5" />
-                  </button>
-                </form>
-              </Reveal>
-
               {/* Buttons */}
-              <Reveal delay={350}>
-                <div className="mt-5 flex flex-wrap items-center gap-3">
+              <Reveal delay={300}>
+                <div className="mt-8 flex flex-wrap items-center gap-3">
                   <a
                     href="#directory-section"
                     onClick={(e) => {
@@ -407,8 +341,8 @@ export default function TeachersDirectoryClient({
       </section>
 
       {/* DIRECTORY SECTION */}
-      <section id="directory-section" className="scroll-mt-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
+      <section id="directory-section" className="scroll-mt-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+
         {/* Categories Tab Bar */}
         <div className="w-full border-b border-vaony-ink/10 flex justify-center">
           <div className="flex overflow-x-auto no-scrollbar gap-8 pb-px">
@@ -440,14 +374,15 @@ export default function TeachersDirectoryClient({
 
         {/* Filter Card Container */}
         <div className="mt-8 bg-white border border-vaony-ink/8 shadow-md rounded-3xl p-6 md:p-8">
-          
+
           {/* Dropdown Filters row */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 items-end">
-            
+
             {/* Category Select */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-vaony-ink/50 uppercase tracking-wider">Categoría</label>
+              <label htmlFor="filter-category" className="text-xs font-semibold text-vaony-ink/50 uppercase tracking-wider">Categoría</label>
               <select
+                id="filter-category"
                 value={selectedCategoryId}
                 onChange={(e) => setSelectedCategoryId(e.target.value)}
                 className="w-full bg-white border border-vaony-ink/10 rounded-xl px-4 py-2.5 text-sm text-vaony-ink/75 font-medium focus:outline-none focus:ring-2 focus:ring-vaony-blue/30 focus:border-vaony-blue transition-all duration-200 cursor-pointer"
@@ -463,37 +398,40 @@ export default function TeachersDirectoryClient({
 
             {/* Level Select */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-vaony-ink/50 uppercase tracking-wider">Nivel</label>
+              <label htmlFor="filter-level" className="text-xs font-semibold text-vaony-ink/50 uppercase tracking-wider">Nivel</label>
               <select
+                id="filter-level"
                 value={selectedLevel}
                 onChange={(e) => setSelectedLevel(e.target.value)}
                 className="w-full bg-white border border-vaony-ink/10 rounded-xl px-4 py-2.5 text-sm text-vaony-ink/75 font-medium focus:outline-none focus:ring-2 focus:ring-vaony-blue/30 focus:border-vaony-blue transition-all duration-200 cursor-pointer"
               >
                 <option value="all">Todos los niveles</option>
-                <option value="BEGINNER">Principiante (Beginner)</option>
-                <option value="INTERMEDIATE">Intermedio (Intermediate)</option>
-                <option value="ADVANCED">Avanzado (Advanced)</option>
+                <option value="BEGINNER">Principiante</option>
+                <option value="INTERMEDIATE">Intermedio</option>
+                <option value="ADVANCED">Avanzado</option>
               </select>
             </div>
 
             {/* Language Select */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-vaony-ink/50 uppercase tracking-wider">Idioma</label>
+              <label htmlFor="filter-language" className="text-xs font-semibold text-vaony-ink/50 uppercase tracking-wider">Idioma</label>
               <select
+                id="filter-language"
                 value={selectedLanguage}
                 onChange={(e) => setSelectedLanguage(e.target.value)}
                 className="w-full bg-white border border-vaony-ink/10 rounded-xl px-4 py-2.5 text-sm text-vaony-ink/75 font-medium focus:outline-none focus:ring-2 focus:ring-vaony-blue/30 focus:border-vaony-blue transition-all duration-200 cursor-pointer"
               >
                 <option value="all">Todos los idiomas</option>
-                <option value="Spanish">Español</option>
-                <option value="English">Inglés</option>
+                <option value="Español">Español</option>
+                <option value="Inglés">Inglés</option>
               </select>
             </div>
 
             {/* Availability Select */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-vaony-ink/50 uppercase tracking-wider">Disponibilidad</label>
+              <label htmlFor="filter-availability" className="text-xs font-semibold text-vaony-ink/50 uppercase tracking-wider">Disponibilidad</label>
               <select
+                id="filter-availability"
                 value={selectedAvailability}
                 onChange={(e) => setSelectedAvailability(e.target.value)}
                 className="w-full bg-white border border-vaony-ink/10 rounded-xl px-4 py-2.5 text-sm text-vaony-ink/75 font-medium focus:outline-none focus:ring-2 focus:ring-vaony-blue/30 focus:border-vaony-blue transition-all duration-200 cursor-pointer"
@@ -506,8 +444,9 @@ export default function TeachersDirectoryClient({
 
             {/* Sorting Select */}
             <div className="flex flex-col gap-1.5 sm:col-span-2 lg:col-span-4 xl:col-span-1">
-              <label className="text-xs font-semibold text-vaony-ink/50 uppercase tracking-wider">Ordenar por</label>
+              <label htmlFor="filter-sort" className="text-xs font-semibold text-vaony-ink/50 uppercase tracking-wider">Ordenar por</label>
               <select
+                id="filter-sort"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="w-full bg-white border border-vaony-ink/10 rounded-xl px-4 py-2.5 text-sm text-vaony-ink/75 font-medium focus:outline-none focus:ring-2 focus:ring-vaony-blue/30 focus:border-vaony-blue transition-all duration-200 cursor-pointer"
@@ -524,7 +463,7 @@ export default function TeachersDirectoryClient({
           {/* Divider */}
           <div className="my-6 border-t border-vaony-ink/8" />
 
-          {/* Search Result Information */}
+          {/* Result Information */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div>
               <h2 className="text-lg font-bold text-vaony-ink">
@@ -534,168 +473,207 @@ export default function TeachersDirectoryClient({
                 Encuentra el mentor ideal según tu nivel, objetivos y disponibilidad.
               </p>
             </div>
-            {searchQuery && (
+            {filteredTeachers.length !== initialTeachers.length && (
               <button
-                onClick={() => {
-                  setSearchQuery("");
-                  setSearchInput("");
-                }}
+                onClick={resetFilters}
                 className="self-start sm:self-center text-xs font-semibold text-vaony-blue hover:text-vaony-deep hover:underline cursor-pointer"
               >
-                Limpiar búsqueda
+                Restaurar filtros
               </button>
             )}
           </div>
         </div>
 
-        {/* Teachers Grid */}
+        {/* Teachers list — horizontal cards */}
         {filteredTeachers.length > 0 ? (
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="mt-10 flex flex-col gap-5">
             {filteredTeachers.map((teacher, index) => {
               const meta = getMetadata(teacher.user.email);
               const isFav = favorites.has(teacher.id);
+              const fullName = `${teacher.user.firstName} ${teacher.user.lastName}`;
+              const certified = teacher._count.credentials > 0;
 
-              // Calculate minimum price among their courses
+              // Cost per class = lowest price among the subjects they teach
               const coursePrices = teacher.courses.map((tc) => tc.course.price);
               const minPrice = coursePrices.length > 0 ? Math.min(...coursePrices) : 25;
               const currency = teacher.courses[0]?.course.currency || "USD";
 
               return (
-                <Reveal key={teacher.id} delay={(index % 4) * 80}>
-                  <div className="h-full bg-white rounded-3xl border border-vaony-ink/8 shadow-sm overflow-hidden flex flex-col group transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-vaony-blue/5">
-                    
-                    {/* Top Image block */}
-                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-vaony-paper">
-                      {/* Teacher photo */}
+                <Reveal key={teacher.id} delay={Math.min(index, 3) * 70}>
+                  <article className="group relative grid grid-cols-1 overflow-hidden rounded-3xl border border-vaony-ink/8 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-vaony-blue/25 hover:shadow-xl hover:shadow-vaony-blue/8 sm:grid-cols-[minmax(0,208px)_1fr]">
+
+                    {/* Photo */}
+                    <div className="relative h-52 w-full overflow-hidden bg-vaony-paper sm:h-full sm:min-h-[236px]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src={meta.image}
-                        alt={`${teacher.user.firstName} ${teacher.user.lastName}`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        src={teacher.user.avatarUrl || "/brand/vaony_solo_logo.svg"}
+                        alt={fullName}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
 
-                      {/* Top Teacher Badge */}
                       {meta.topTeacher && (
-                        <span className="absolute top-3.5 left-3.5 bg-[#ff3366] text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                        <span className="absolute left-3.5 top-3.5 rounded-full bg-[#ff3366] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-sm">
                           Top profesor
                         </span>
                       )}
 
-                      {/* Favorite Heart Button */}
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          toggleFavorite(teacher.id);
-                        }}
-                        className="absolute top-3.5 right-3.5 h-8 w-8 rounded-full bg-white shadow-md flex items-center justify-center border border-vaony-ink/5 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer text-vaony-ink/40 hover:text-red-500"
-                      >
-                        {isFav ? (
-                          <HeartIconSolid className="h-4.5 w-4.5 text-red-500" />
-                        ) : (
-                          <HeartIcon className="h-4.5 w-4.5" />
-                        )}
-                      </button>
-
-                      {/* Availability status badge */}
-                      <div className="absolute bottom-3.5 left-3.5 bg-white/90 backdrop-blur-sm shadow-md border border-vaony-ink/5 rounded-full px-2.5 py-0.5 flex items-center gap-1.5 text-[9px] text-vaony-ink font-bold">
+                      <div className="absolute bottom-3.5 left-3.5 flex items-center gap-1.5 rounded-full border border-vaony-ink/5 bg-white/90 px-2.5 py-0.5 text-[9px] font-bold text-vaony-ink shadow-md backdrop-blur-sm">
                         <span className={`h-1.5 w-1.5 rounded-full ${meta.dotColor}`} />
-                        <span className="capitalize">{meta.statusText}</span>
+                        <span>{meta.statusText}</span>
                       </div>
                     </div>
 
-                    {/* Card Body */}
-                    <div className="p-5 flex-1 flex flex-col justify-between">
-                      <div>
-                        {/* Name and verified mark */}
-                        <div className="flex items-center gap-1.5">
-                          <h3 className="font-display font-bold text-vaony-ink group-hover:text-vaony-blue transition-colors duration-200">
-                            {teacher.user.firstName} {teacher.user.lastName}
-                          </h3>
-                          <svg className="h-4.5 w-4.5 text-blue-500 fill-current shrink-0" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
-                          </svg>
-                        </div>
+                    {/* Body */}
+                    <div className="grid gap-5 p-5 sm:p-6 lg:grid-cols-[1fr_auto]">
 
-                        {/* Title/Position */}
-                        <p className="mt-1.5 text-xs font-semibold text-vaony-ink/75 line-clamp-1">
-                          {teacher.title || teacher.specialization}
-                        </p>
-
-                        {/* Ratings and Experience */}
-                        <div className="mt-2.5 flex items-center gap-2">
-                          <div className="flex items-center gap-0.5 text-vaony-amber">
-                            <StarIcon className="h-3.5 w-3.5 fill-current" />
-                            <span className="text-xs font-bold text-vaony-ink">
-                              {teacher.ratingAvg.toFixed(1)}
-                            </span>
+                      {/* Main info */}
+                      <div className="min-w-0">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <h3 className="font-display text-lg font-bold text-vaony-ink transition-colors duration-200 group-hover:text-vaony-blue">
+                              <Link href={`/teachers/${teacher.userId}`} className="before:absolute before:inset-0 before:content-['']">
+                                {fullName}
+                              </Link>
+                            </h3>
+                            <p className="mt-1 text-sm font-semibold text-vaony-blue">
+                              {teacher.specialization || teacher.title}
+                            </p>
                           </div>
-                          <span className="text-[11px] text-vaony-ink/40">
-                            ({teacher.ratingCount})
-                          </span>
-                          <span className="text-[11px] text-vaony-ink/30 font-bold">·</span>
-                          <span className="text-xs text-vaony-ink/60 font-medium">
-                            {meta.yearsExp} años exp.
-                          </span>
+
+                          <button
+                            type="button"
+                            onClick={() => toggleFavorite(teacher.id)}
+                            aria-pressed={isFav}
+                            aria-label={
+                              isFav
+                                ? `Quitar a ${fullName} de favoritos`
+                                : `Guardar a ${fullName} en favoritos`
+                            }
+                            className="relative z-10 flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-vaony-ink/8 bg-white text-vaony-ink/40 shadow-sm transition-all duration-200 hover:scale-105 hover:text-red-500 active:scale-95 lg:hidden"
+                          >
+                            {isFav ? (
+                              <HeartIconSolid className="h-4.5 w-4.5 text-red-500" />
+                            ) : (
+                              <HeartIcon className="h-4.5 w-4.5" />
+                            )}
+                          </button>
                         </div>
 
-                        {/* Micro status below experience (response time etc.) */}
-                        <div className="mt-2 flex items-center gap-1.5 text-[10px] text-vaony-ink/50 font-medium">
-                          <span className={`h-1 w-1 rounded-full ${meta.microDotColor}`} />
-                          <span>{meta.microStatusText}</span>
-                        </div>
+                        {certified && (
+                          <span className="mt-2.5 inline-flex items-center gap-1.5 rounded-full border border-vaony-amber/35 bg-vaony-amber/12 px-2.5 py-1 text-[11px] font-bold text-amber-700">
+                            <CheckBadgeIcon className="h-3.5 w-3.5" />
+                            Profesor certificado
+                          </span>
+                        )}
 
-                        {/* Tech Stack tags */}
-                        <div className="mt-4 flex flex-wrap gap-1.5">
-                          {teacher.softwareTags.map((st) => (
-                            <SoftwareBadge key={st.tag.id} name={st.tag.name} />
-                          ))}
+                        {teacher.bio && (
+                          <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-vaony-ink/65">
+                            {teacher.bio}
+                          </p>
+                        )}
+
+                        {teacher.softwareTags.length > 0 && (
+                          <div className="mt-3.5 flex flex-wrap gap-1.5">
+                            {teacher.softwareTags.slice(0, 5).map((st) => (
+                              <SoftwareBadge key={st.tag.id} name={st.tag.name} />
+                            ))}
+                            {teacher.softwareTags.length > 5 && (
+                              <span className="inline-flex items-center rounded-md border border-vaony-ink/10 px-2 py-0.5 text-[11px] text-vaony-ink/50">
+                                +{teacher.softwareTags.length - 5}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-vaony-ink/60">
+                          {teacher.yearsExperience !== null && (
+                            <span className="inline-flex items-center gap-1.5 font-medium">
+                              <ClockIcon className="h-3.5 w-3.5 text-vaony-ink/40" />
+                              {teacher.yearsExperience} años de experiencia
+                            </span>
+                          )}
+                          <span aria-hidden className="text-vaony-ink/20">·</span>
+                          <span className="inline-flex items-center gap-1.5 font-medium">
+                            <span className={`h-1.5 w-1.5 rounded-full ${meta.microDotColor}`} />
+                            {meta.microStatusText}
+                          </span>
                         </div>
                       </div>
 
-                      {/* Bottom area: Price and Button */}
-                      <div className="mt-6 pt-4 border-t border-vaony-ink/8 flex items-center justify-between">
+                      {/* Rating · price · CTA */}
+                      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-vaony-ink/8 pt-4 lg:w-52 lg:flex-col lg:flex-nowrap lg:items-stretch lg:justify-between lg:gap-3 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+                        <div className="lg:flex lg:items-start lg:justify-between">
+                          <div>
+                            <div className="flex items-center gap-1.5">
+                              <StarIcon className="h-4 w-4 text-vaony-amber" />
+                              <span className="font-display text-base font-bold text-vaony-ink">
+                                {teacher.ratingAvg.toFixed(1)}
+                              </span>
+                              <span className="text-xs text-vaony-ink/45">
+                                ({teacher.ratingCount})
+                              </span>
+                            </div>
+                            <p className="mt-0.5 hidden text-[11px] text-vaony-ink/45 lg:block">
+                              {teacher.ratingCount === 1 ? "reseña" : "reseñas"} verificadas
+                            </p>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => toggleFavorite(teacher.id)}
+                            aria-pressed={isFav}
+                            aria-label={
+                              isFav
+                                ? `Quitar a ${fullName} de favoritos`
+                                : `Guardar a ${fullName} en favoritos`
+                            }
+                            className="relative z-10 hidden h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-vaony-ink/8 bg-white text-vaony-ink/40 shadow-sm transition-all duration-200 hover:scale-105 hover:text-red-500 active:scale-95 lg:flex"
+                          >
+                            {isFav ? (
+                              <HeartIconSolid className="h-4.5 w-4.5 text-red-500" />
+                            ) : (
+                              <HeartIcon className="h-4.5 w-4.5" />
+                            )}
+                          </button>
+                        </div>
+
                         <div>
-                          <div className="text-[10px] font-bold text-vaony-ink/45 uppercase tracking-wider">Tarifa</div>
-                          <div className="flex items-baseline gap-0.5">
-                            <span className="font-display font-extrabold text-vaony-ink text-base">
+                          <div className="text-[10px] font-bold uppercase tracking-wider text-vaony-ink/45">
+                            Costo por clase
+                          </div>
+                          <div className="flex items-baseline gap-1">
+                            <span className="font-display text-2xl font-extrabold text-vaony-ink">
                               {formatMoney(minPrice, currency)}
                             </span>
-                            <span className="text-[11px] text-vaony-ink/55 font-medium">/hora</span>
+                            <span className="text-[11px] font-medium text-vaony-ink/55">
+                              /clase
+                            </span>
                           </div>
                         </div>
 
-                        <Link
-                          href={`/teachers/${teacher.userId}`}
-                          className="inline-flex items-center justify-center rounded-xl bg-vaony-blue px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-vaony-blue/10 hover:bg-vaony-deep hover:shadow-vaony-blue/20 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer"
-                        >
-                          Ver disponibilidad
-                        </Link>
+                        <span className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-vaony-blue px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-vaony-blue/10 transition-all duration-200 group-hover:bg-vaony-deep group-hover:shadow-vaony-blue/20 sm:w-auto lg:w-full">
+                          Ver perfil
+                          <ArrowRightIcon className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                        </span>
                       </div>
-
                     </div>
-                  </div>
+                  </article>
                 </Reveal>
               );
             })}
           </div>
         ) : (
-          <div className="mt-12 bg-white border border-vaony-ink/8 rounded-3xl p-12 text-center max-w-lg mx-auto">
-            <div className="text-4xl">🔍</div>
-            <h3 className="mt-4 text-lg font-bold text-vaony-ink">No se encontraron profesores</h3>
+          <div className="mx-auto mt-12 max-w-lg rounded-3xl border border-vaony-ink/8 bg-white p-12 text-center">
+            <div className="text-4xl">🎯</div>
+            <h3 className="mt-4 text-lg font-bold text-vaony-ink">
+              Ningún profesor coincide con estos filtros
+            </h3>
             <p className="mt-2 text-sm text-vaony-ink/60">
-              Prueba a cambiar tus filtros o realiza otra búsqueda (ej. "calculus", "CNC", "python").
+              Prueba con otra categoría, nivel o idioma para ver más resultados.
             </p>
             <button
-              onClick={() => {
-                setSearchQuery("");
-                setSearchInput("");
-                setSelectedCategoryId("all");
-                setSelectedLevel("all");
-                setSelectedLanguage("all");
-                setSelectedAvailability("all");
-                setSortBy("popular");
-              }}
-              className="mt-6 inline-flex items-center justify-center rounded-xl bg-vaony-blue px-5 py-2.5 text-xs font-semibold text-white hover:bg-vaony-deep transition-all duration-200 cursor-pointer"
+              onClick={resetFilters}
+              className="mt-6 inline-flex cursor-pointer items-center justify-center rounded-xl bg-vaony-blue px-5 py-2.5 text-xs font-semibold text-white transition-all duration-200 hover:bg-vaony-deep"
             >
               Restaurar filtros
             </button>
