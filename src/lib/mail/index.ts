@@ -37,8 +37,8 @@ export const templates = {
   welcome: (name: string) =>
     shell(
       `Welcome to Vaony, ${name}!`,
-      `<p>Your account is ready. Browse the course catalog and book your first class.</p>
-       <p><a href="${APP_URL}/courses" style="background:#2924FD;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none">Explore courses</a></p>`
+      `<p>Your account is ready. Browse our teachers and book your first class.</p>
+       <p><a href="${APP_URL}/teachers" style="background:#2924FD;color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none">Explore teachers</a></p>`
     ),
   passwordReset: (link: string) =>
     shell(

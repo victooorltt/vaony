@@ -654,10 +654,9 @@ export default async function TeacherPublicProfile({
                 </h2>
                 <div className="mt-3 space-y-2.5">
                   {profile.courses.map(({ course }) => (
-                    <Link
+                    <div
                       key={course.id}
-                      href={`/courses/${course.slug}`}
-                      className="block rounded-xl border border-vaony-ink/8 bg-white p-4 transition hover:border-vaony-blue/30 hover:shadow-md"
+                      className="rounded-xl border border-vaony-ink/8 bg-white p-4"
                     >
                       <Badge tone="blue">{course.category.name}</Badge>
                       <p className="mt-2 text-sm font-semibold text-vaony-ink">
@@ -667,7 +666,7 @@ export default async function TeacherPublicProfile({
                         {formatMoney(course.price, course.currency)}
                         <span className="text-vaony-ink/45"> /clase</span>
                       </p>
-                    </Link>
+                    </div>
                   ))}
                 </div>
               </div>

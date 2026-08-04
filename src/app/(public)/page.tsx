@@ -235,7 +235,7 @@ export default async function HomePage() {
               <ButtonLink href="/register/student" size="lg">
                 Reservar tu primera clase <ArrowRightIcon className="h-4 w-4 ml-1" />
               </ButtonLink>
-              <ButtonLink href="/courses" variant="secondary" size="lg">
+              <ButtonLink href="/teachers" variant="secondary" size="lg">
                 Explorar materias
               </ButtonLink>
             </div>
@@ -339,10 +339,10 @@ export default async function HomePage() {
               </h2>
             </div>
             <Link
-              href="/courses"
+              href="/teachers"
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-vaony-blue hover:underline"
             >
-              Ver catálogo completo <ArrowRightIcon className="h-4 w-4" />
+              Ver todos los profesores <ArrowRightIcon className="h-4 w-4" />
             </Link>
           </div>
         </Reveal>
@@ -350,7 +350,7 @@ export default async function HomePage() {
           {featuredCourses.map((course, i) => (
             <Reveal key={course.id} delay={i * 90}>
               <Link
-                href={`/courses/${course.slug}`}
+                href="/teachers"
                 className="group flex h-full flex-col rounded-2xl border border-vaony-ink/8 bg-white p-6 shadow-xs transition duration-200 hover:-translate-y-1 hover:border-vaony-blue/30 hover:shadow-xl hover:shadow-vaony-blue/10"
               >
                 <Badge tone="blue">{course.category.name}</Badge>
@@ -366,7 +366,7 @@ export default async function HomePage() {
                     <span className="font-normal text-vaony-ink/50"> /h</span>
                   </span>
                   <span className="text-xs font-semibold text-vaony-blue flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                    Ver clase <ArrowRightIcon className="h-3.5 w-3.5" />
+                    Ver profesores <ArrowRightIcon className="h-3.5 w-3.5" />
                   </span>
                 </div>
               </Link>

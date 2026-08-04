@@ -24,8 +24,8 @@ export default async function StudentCoursesPage() {
         <div className="mt-6">
           <EmptyState
             title="You're not enrolled in any course"
-            body="Pick a subject from the catalog — your teacher and materials will appear here."
-            action={<ButtonLink href="/courses">Explore courses</ButtonLink>}
+            body="Pick a teacher and book your first class — your materials will appear here."
+            action={<ButtonLink href="/teachers">Explore teachers</ButtonLink>}
           />
         </div>
       ) : (

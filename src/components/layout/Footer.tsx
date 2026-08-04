@@ -5,7 +5,6 @@ const columns = [
   {
     title: "Plataforma",
     links: [
-      { href: "/courses", label: "Catálogo de cursos" },
       { href: "/teachers", label: "Nuestros profesores" },
       { href: "/apply-teacher", label: "Enseña en Vaony" },
     ],

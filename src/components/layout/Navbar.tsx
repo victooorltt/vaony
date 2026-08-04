@@ -15,7 +15,6 @@ import { ButtonLink } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/courses", label: "Cursos" },
   { href: "/teachers", label: "Profesores" },
   { href: "/about", label: "Sobre nosotros" },
   { href: "/contact", label: "Contacto" },

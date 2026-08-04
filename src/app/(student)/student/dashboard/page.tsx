@@ -96,8 +96,8 @@ export default async function StudentDashboard() {
           <div className="mt-4">
             <EmptyState
               title="No courses yet"
-              body="Browse the catalog and enroll in your first course to get started."
-              action={<ButtonLink href="/courses">Explore courses</ButtonLink>}
+              body="Browse our teachers and book your first class to get started."
+              action={<ButtonLink href="/teachers">Explore teachers</ButtonLink>}
             />
           </div>
         ) : (

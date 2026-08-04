@@ -276,12 +276,6 @@ export default function TeachersDirectoryClient({
                   >
                     Explorar profesores <span className="text-base">→</span>
                   </a>
-                  <Link
-                    href="/courses"
-                    className="inline-flex items-center justify-center rounded-xl border border-vaony-ink/10 bg-white px-6 py-3 text-sm font-semibold text-vaony-ink/80 hover:bg-vaony-ink/[0.02] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
-                  >
-                    Ver cursos
-                  </Link>
                 </div>
               </Reveal>
 

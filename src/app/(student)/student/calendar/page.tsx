@@ -69,7 +69,7 @@ export default async function StudentCalendarPage() {
         <EmptyState
           title="No teachers available yet"
           body="Check back soon — new teachers are being onboarded."
-          action={<ButtonLink href="/courses">Browse courses</ButtonLink>}
+          action={<ButtonLink href="/teachers">Browse teachers</ButtonLink>}
         />
       ) : (
         <BookingCalendar teachers={teachers} timezone={user.timezone} bookings={calendarBookings} />
