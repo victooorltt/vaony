@@ -218,20 +218,21 @@ export default async function HomePage() {
   return (
     <>
       {/* ---- HERO SECTION ---- */}
-      <section className="grid-pattern relative overflow-hidden bg-vaony-paper pb-20 pt-20 sm:pt-24 lg:pt-26 lg:pb-0 lg:min-h-[680px] lg:flex lg:items-center">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-12 w-full">
-          <div className="lg:col-span-6 relative z-10">
-            <h1 className="font-display text-4xl font-bold leading-tight text-vaony-ink sm:text-5xl lg:text-6xl tracking-tight">
+      <section className="grid-pattern relative overflow-hidden bg-vaony-paper pb-14 pt-16 sm:pt-20 lg:pt-24 lg:pb-14 lg:min-h-[660px] lg:flex lg:items-center">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-12 w-full">
+          <div className="lg:col-span-6 relative z-30">
+            <h1 className="font-display text-3xl font-bold leading-tight text-vaony-ink sm:text-4xl lg:text-5xl tracking-tight max-w-xl">
               Desarrolla tus habilidades con los{" "}
               <span className="brand-gradient-text">
-                <span className="">mejores profesores del mundo</span>
+                mejores profesores <br className="hidden sm:inline" />
+                del mundo
               </span>
             </h1>
-            <p className="mt-5 max-w-xl text-lg text-vaony-ink/75 leading-relaxed">
+            <p className="mt-4 max-w-lg text-base sm:text-lg text-vaony-ink/75 leading-relaxed">
               Conecta con profesores y profesionales internacionales para aprender programación, ingeniería, manufactura, ciencias exactas y otras áreas técnicas mediante clases online personalizadas.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-7 flex flex-wrap items-center gap-4">
               <ButtonLink href="/register/student" size="lg">
                 Reservar tu primera clase <ArrowRightIcon className="h-4 w-4 ml-1" />
               </ButtonLink>
@@ -240,18 +241,18 @@ export default async function HomePage() {
               </ButtonLink>
             </div>
 
-            {/* Sección de confianza (Trust Badges) */}
-            <div className="mt-10 pt-8 border-t border-vaony-ink/10">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {/* Sección de confianza (Trust Badges) - compactas y flotando sobre degradado */}
+            <div className="mt-9 pt-7 border-t border-vaony-ink/10 relative z-30">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 {trustItems.map((item, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-2 rounded-xl bg-white p-2.5 shadow-xs border border-vaony-ink/5"
+                    className="flex items-center gap-2 rounded-xl bg-white/95 backdrop-blur-xs p-2.5 shadow-sm border border-vaony-ink/8 min-w-0"
                   >
                     <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-vaony-blue/10 text-vaony-blue shrink-0">
                       <item.icon className="h-4 w-4" />
                     </div>
-                    <span className="text-xs font-medium text-vaony-ink leading-tight">
+                    <span className="text-[11px] font-semibold text-vaony-ink leading-tight min-w-0">
                       + {item.text.replace("+ ", "")}
                     </span>
                   </div>
@@ -260,13 +261,13 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:left-[48%] lg:w-[52%] mt-10 lg:mt-0 relative w-full h-[380px] sm:h-[480px] lg:h-full overflow-hidden">
+          <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:left-[45%] lg:w-[55%] xl:left-[44%] xl:w-[56%] mt-8 lg:mt-0 relative w-full h-[400px] sm:h-[480px] lg:h-full overflow-hidden z-10">
             {/* Gradient Overlay */}
             <div className="absolute inset-0 z-10 pointer-events-none hero-image-overlay" />
             <img
               src="/Hero.webp"
               alt="Clases particulares con expertos de todo el mundo en VAONY"
-              className="h-full w-full object-cover object-center"
+              className="h-full w-full object-cover object-[70%_center] sm:object-[68%_center] lg:object-[65%_center] xl:object-[68%_center]"
             />
           </div>
         </div>
